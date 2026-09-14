@@ -1,7 +1,7 @@
 # Bunge Chopped 2026 — Fantasy Dashboard
 
-**Live dashboard: https://gabefolk.github.io/bunge-chopped-2026/**
-(GitHub repo: https://github.com/gabefolk/bunge-chopped-2026 — public)
+**Live dashboard: https://gabrielfolk.github.io/bunge-chopped-2026/**
+(GitHub repo: https://github.com/gabrielfolk/bunge-chopped-2026 — public)
 
 Sleeper league ID: `1398014426640044032`
 
@@ -174,6 +174,12 @@ and run `node --check` on the extracted inline `<script>` block.
 - The two cloud routines from the previous session are still sitting in
   https://claude.ai/code/routines, broken and now unnecessary. Worth deleting
   them there (routines can only be deleted from the web UI, not via API).
+
+**2026-09-14 — GitHub username changed from `gabefolk` to `gabrielfolk`.**
+- GitHub account renamed; the repo is now at `github.com/gabrielfolk/bunge-chopped-2026`
+  and Pages moved to `https://gabrielfolk.github.io/bunge-chopped-2026/`. GitHub
+  keeps a redirect from the old `gabefolk` URLs, but updated the local git
+  remote and every link in this README to the new URL rather than rely on it.
 
 ## TODO / next session
 
