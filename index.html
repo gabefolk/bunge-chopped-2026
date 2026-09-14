@@ -574,7 +574,7 @@
        icon -- up and behind the handle, standing in for the arm -- turns a
        modest rotation into the same kind of arcing lift-and-drop a real
        swing has, without the earlier "hinge at the handle" look. */
-    transform-origin: 94px -34px;
+    transform-origin: 128px -8px;
     animation: chopSwing 1.3s ease-in-out infinite;
   }
   @keyframes chopSwing {
@@ -962,10 +962,14 @@
         <path d="M30 18 L70 13 L70 16 L29 21 Z" fill="#ffffff" opacity="0.4"/>
         <circle cx="68" cy="17" r="2.4" fill="none" stroke="#7d838d" stroke-width="1.4" opacity="0.7"/>
         <!-- Wooden dowel handle: shaft + rounded knob end + a rivet where it
-             meets the blade, instead of a plain thin rod. -->
-        <rect x="68" y="-4" width="9" height="19" rx="4" fill="#8b5a2b" stroke="#5c3a1a" stroke-width="1"/>
-        <circle cx="72.5" cy="-5" r="6" fill="#8b5a2b" stroke="#5c3a1a" stroke-width="1"/>
-        <circle cx="72.5" cy="14" r="1.5" fill="#5c3a1a"/>
+             meets the blade. Continues the blade's own spine line (rotated
+             to match its slight slope) instead of jutting straight up at a
+             right angle to it. -->
+        <g transform="rotate(-7 74 22)">
+          <rect x="74" y="18" width="23" height="8" rx="4" fill="#8b5a2b" stroke="#5c3a1a" stroke-width="1"/>
+          <circle cx="97" cy="22" r="5.5" fill="#8b5a2b" stroke="#5c3a1a" stroke-width="1"/>
+          <circle cx="77" cy="22" r="1.5" fill="#5c3a1a"/>
+        </g>
       </g>
     </svg>`;
 
