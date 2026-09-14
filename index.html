@@ -431,6 +431,42 @@
   .bench-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent2), var(--accent)); }
   .bench-val { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; text-align: right; color: var(--ink-muted); }
 
+  /* ---------- Boom & bust ---------- */
+  .boombust-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 640px) { .boombust-grid { grid-template-columns: 1fr; } }
+  .boombust-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+  }
+  .boombust-label {
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em;
+    margin-bottom: 8px;
+  }
+  .boombust-label.boom { color: var(--good); }
+  .boombust-label.bust { color: var(--critical); }
+  .boombust-row {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .boombust-row:last-child { border-bottom: none; }
+  .bb-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bb-meta { font-size: 11px; color: var(--ink-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bb-delta { font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 13.5px; text-align: right; font-variant-numeric: tabular-nums; }
+  .bb-delta.boom { color: var(--good); }
+  .bb-delta.bust { color: var(--critical); }
+
   /* ---------- Roster detail ---------- */
   .roster-controls {
     display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
@@ -619,6 +655,23 @@
   <div class="stat-grid" id="insights-grid"></div>
 </section>
 
+<section id="sec-boombust">
+  <div class="section-head">
+    <h2>Boom &amp; Bust</h2>
+    <span class="note">Live points vs. Sleeper's pre-game projection, rostered players only</span>
+  </div>
+  <div class="boombust-grid">
+    <div class="boombust-col liftable">
+      <div class="boombust-label boom">🚀 Overperforming</div>
+      <div id="boom-list"></div>
+    </div>
+    <div class="boombust-col liftable">
+      <div class="boombust-label bust">📉 Underperforming</div>
+      <div id="bust-list"></div>
+    </div>
+  </div>
+</section>
+
 <section id="sec-bench">
   <div class="section-head">
     <h2>Bench Points Left on the Table</h2>
@@ -683,14 +736,18 @@
   const LEAGUE_ID = '1398014426640044032';
   const API = 'https://api.sleeper.app/v1';
   const PLAYERS_CACHE_KEY = 'bunge_players_cache_v1';
+  const PROJECTIONS_CACHE_PREFIX = 'bunge_projections_cache_v1';
   const STATE_CACHE_KEY = 'bunge_state_cache_v1';
   const PLAYERS_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24h
+  const PROJECTIONS_MAX_AGE_MS = 60 * 60 * 1000; // 1h — projections don't move mid-game like actual stats do
+  const BOOM_BUST_MIN_PROJECTION = 2; // filter out irrelevant scrubs so the list isn't noise
+  const BOOM_BUST_COUNT = 6;
   const POLL_MS = 30 * 1000; // 30s while tab is visible
 
   const AVATAR_COLORS = ['--avatar-a', '--avatar-b', '--avatar-c', '--avatar-d', '--avatar-e', '--avatar-f'];
   const POS_VAR = { QB: '--pos-qb', RB: '--pos-rb', WR: '--pos-wr', TE: '--pos-te', FLEX: '--pos-te' };
 
-  const state = { league: null, teams: [], players: {}, matchups: [], txns: [] };
+  const state = { league: null, teams: [], players: {}, matchups: [], txns: [], projections: {}, stats: {} };
   let lastFetchOk = null; // Date of last successful fetch
   let lastFetchError = null;
 
@@ -714,6 +771,24 @@
     } catch (e) { /* ignore cache errors */ }
     const data = await fetchJSON(`${API}/players/nfl`);
     try { localStorage.setItem(PLAYERS_CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (e) { /* quota etc, ignore */ }
+    return data;
+  }
+
+  // Sleeper's per-player pre-game projection for the week, keyed by player_id
+  // (undocumented but public/CORS-open endpoint, same host). Cached for an
+  // hour since projections are locked pre-game and don't move like actual
+  // stats do during games.
+  async function loadProjections(season, week) {
+    const cacheKey = `${PROJECTIONS_CACHE_PREFIX}_${season}_${week}`;
+    try {
+      const cachedRaw = localStorage.getItem(cacheKey);
+      if (cachedRaw) {
+        const cached = JSON.parse(cachedRaw);
+        if (cached && cached.data && Date.now() - cached.ts < PROJECTIONS_MAX_AGE_MS) return cached.data;
+      }
+    } catch (e) { /* ignore cache errors */ }
+    const data = await fetchJSON(`${API}/projections/nfl/regular/${season}/${week}`);
+    try { localStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data })); } catch (e) { /* quota etc, ignore */ }
     return data;
   }
 
@@ -769,17 +844,18 @@
       fetchJSON(`${API}/league/${LEAGUE_ID}/drafts`).catch(() => []),
     ]);
     const week = nflState.week || league.settings.leg || 1;
-    const [matchupsRaw, txns] = await Promise.all([
+    const [matchupsRaw, txns, statsRaw, projectionsRaw, players] = await Promise.all([
       fetchJSON(`${API}/league/${LEAGUE_ID}/matchups/${week}`),
       fetchJSON(`${API}/league/${LEAGUE_ID}/transactions/${week}`),
+      fetchJSON(`${API}/stats/nfl/regular/${league.season}/${week}`).catch(() => ({})),
+      loadProjections(league.season, week).catch(() => ({})),
+      loadPlayers(),
     ]);
     const draftOrder = drafts && drafts[0] ? drafts[0].draft_order : null;
 
     const counts = {};
     matchupsRaw.forEach(m => { counts[m.matchup_id] = (counts[m.matchup_id] || 0) + 1; });
     const matchupsPaired = Object.values(counts).some(c => c > 1);
-
-    const players = await loadPlayers();
 
     return {
       league: {
@@ -800,13 +876,17 @@
       players,
       matchups: buildMatchups(matchupsRaw),
       txns: txns || [],
+      projections: projectionsRaw || {},
+      stats: statsRaw || {},
     };
   }
 
   function cacheState(s) {
     try {
-      // Skip caching `players` here — it has its own larger, longer-lived cache above.
-      const { players, ...rest } = s;
+      // Skip caching `players`/`projections`/`stats` here — they're large and
+      // each have their own fetch/cache path already; the "last good state"
+      // fallback is meant to be a light snapshot of the rest.
+      const { players, projections, stats, ...rest } = s;
       localStorage.setItem(STATE_CACHE_KEY, JSON.stringify({ ts: Date.now(), data: rest }));
     } catch (e) { /* ignore */ }
   }
@@ -1305,6 +1385,64 @@
 
     renderStatCards(insightsGrid, insightTiles, 'insight');
 
+    // ---- Boom & bust: rostered players whose actual points this week are
+    // furthest above/below Sleeper's pre-game projection ----
+    function renderBoomBustList(container, rows, kind) {
+      container.innerHTML = '';
+      if (!rows.length) {
+        const empty = document.createElement('div');
+        empty.className = 'stat-detail-empty';
+        empty.textContent = 'No projections available yet.';
+        container.appendChild(empty);
+        return;
+      }
+      rows.forEach(r => {
+        const info = playerLabel(r.pid);
+        const row = document.createElement('div');
+        row.className = 'boombust-row';
+        const badge = document.createElement('div');
+        badge.className = 'pos-badge';
+        const posVar = POS_VAR[info.pos] || null;
+        badge.style.background = posVar ? `var(${posVar})` : 'var(--ink-faint)';
+        badge.textContent = info.pos || '—';
+        const mid = document.createElement('div');
+        const nameEl = document.createElement('div');
+        nameEl.className = 'bb-name';
+        nameEl.textContent = info.name + (info.team ? ` · ${info.team}` : '');
+        const metaEl = document.createElement('div');
+        metaEl.className = 'bb-meta';
+        const ownerPart = r.owners.length ? ` · ${r.owners.join(', ')}` : '';
+        metaEl.textContent = `${fmt(r.projPts)} proj → ${fmt(r.actualPts)} actual${ownerPart}`;
+        mid.appendChild(nameEl);
+        mid.appendChild(metaEl);
+        const deltaEl = document.createElement('div');
+        deltaEl.className = `bb-delta ${kind}`;
+        deltaEl.textContent = `${r.delta > 0 ? '+' : ''}${fmt(r.delta)}`;
+        row.appendChild(badge);
+        row.appendChild(mid);
+        row.appendChild(deltaEl);
+        container.appendChild(row);
+      });
+    }
+
+    const rosteredIds = new Set();
+    teams.forEach(t => t.players.forEach(pid => rosteredIds.add(pid)));
+    const boomBustRows = [];
+    rosteredIds.forEach(pid => {
+      const proj = state.projections[pid];
+      const actual = state.stats[pid];
+      if (!proj || !actual) return;
+      const projPts = proj.pts_ppr;
+      const actualPts = actual.pts_ppr;
+      if (projPts == null || actualPts == null || projPts < BOOM_BUST_MIN_PROJECTION) return;
+      const owners = teams.filter(t => t.players.includes(pid)).map(t => t.team_name || t.display_name);
+      boomBustRows.push({ pid, projPts, actualPts, delta: actualPts - projPts, owners });
+    });
+    const boomRows = boomBustRows.slice().sort((a, b) => b.delta - a.delta).slice(0, BOOM_BUST_COUNT);
+    const bustRows = boomBustRows.slice().sort((a, b) => a.delta - b.delta).slice(0, BOOM_BUST_COUNT);
+    renderBoomBustList(document.getElementById('boom-list'), boomRows, 'boom');
+    renderBoomBustList(document.getElementById('bust-list'), bustRows, 'bust');
+
     // ---- Bench points ----
     const benchList = document.getElementById('bench-list');
     benchList.innerHTML = '';
@@ -1395,6 +1533,8 @@
     state.players = data.players;
     state.matchups = data.matchups;
     state.txns = data.txns;
+    state.projections = data.projections || {};
+    state.stats = data.stats || {};
   }
 
   async function refresh() {
@@ -1416,7 +1556,7 @@
   async function boot() {
     const cached = loadCachedState();
     if (cached) {
-      applyLoaded({ ...cached.data, players: {} }); // players filled in once the real load completes
+      applyLoaded({ ...cached.data, players: {}, projections: {}, stats: {} }); // filled in once the real load completes
       lastFetchOk = new Date(cached.ts);
       render();
       updateSyncPill();
