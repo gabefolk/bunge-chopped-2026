@@ -234,15 +234,15 @@
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 24px;
-    align-items: start;
+    align-items: stretch;
     margin-bottom: 64px;
   }
-  #sec-chop { grid-column: span 4; }
+  #sec-chop { grid-column: span 4; display: flex; flex-direction: column; }
   #sec-stats { grid-column: span 8; }
   #sec-insights, #sec-boombust, #sec-bench, #sec-live, #sec-standings, #sec-roster {
     grid-column: span 12;
   }
-  .chop-card { height: 100%; box-sizing: border-box; }
+  .chop-card { flex: 1; box-sizing: border-box; }
   @media (max-width: 860px) {
     #sec-chop, #sec-stats { grid-column: span 12; }
   }
