@@ -742,10 +742,9 @@
 
 <section id="sec-live">
   <div class="section-head">
-    <h2>Live Scoreboard</h2>
+    <h2>Live Leaderboard</h2>
     <span class="note" id="live-note"></span>
   </div>
-  <div id="live-banner"></div>
   <div class="scoreboard liftable" id="live-scoreboard"></div>
 </section>
 
@@ -916,10 +915,6 @@
     ]);
     const draftOrder = drafts && drafts[0] ? drafts[0].draft_order : null;
 
-    const counts = {};
-    matchupsRaw.forEach(m => { counts[m.matchup_id] = (counts[m.matchup_id] || 0) + 1; });
-    const matchupsPaired = Object.values(counts).some(c => c > 1);
-
     return {
       league: {
         name: league.name,
@@ -931,8 +926,6 @@
         scoring_type: scoringTypeFrom(league),
         trade_deadline_week: league.settings ? league.settings.trade_deadline : null,
         playoff_week_start: (league.settings && league.settings.playoff_week_start) || null,
-        schedule_paired: matchupsPaired,
-        matchups_paired: matchupsPaired,
         last_synced: new Date().toISOString(),
       },
       teams: buildTeams(users, rosters, draftOrder),
@@ -1206,19 +1199,11 @@
       chopCard.innerHTML = '';
     }
 
-    // ---- Live scoreboard ----
+    // ---- Live leaderboard: it's a chop league (lowest score each week is
+    // out), not head-to-head, so this is always a ranked leaderboard — no
+    // matchup pairing to check for. ----
     const liveNote = document.getElementById('live-note');
-    const liveBanner = document.getElementById('live-banner');
-    liveBanner.innerHTML = '';
-    if (!league.matchups_paired) {
-      liveNote.textContent = `Week ${league.current_week} · ranked by live points`;
-      const banner = document.createElement('div');
-      banner.className = 'note-banner';
-      banner.innerHTML = `<span><b>No opponents assigned yet.</b> Sleeper hasn't paired up this week's matchups, so consider this a free-for-all leaderboard until it does.</span>`;
-      liveBanner.appendChild(banner);
-    } else {
-      liveNote.textContent = `Week ${league.current_week} · head-to-head · may the odds be ever in your favor`;
-    }
+    liveNote.textContent = `Week ${league.current_week} · ranked by live points`;
 
     const ranked = matchups.slice().sort((a, b) => b.points - a.points);
     const maxPts = Math.max(1, ...ranked.map(m => m.points));

@@ -199,7 +199,10 @@ and run `node --check` on the extracted inline `<script>` block.
   sections should extend past week 1 (currently hardcoded to the Sleeper-reported
   current week — this already reads the week dynamically, just needs multi-week
   history if we want season-long trends like luckiest/unluckiest record).
-- [ ] Confirm whether Sleeper ever pairs up real head-to-head matchups for this
-  league (still unpaired as of 2026-09-13/14); if so, "Live Scoreboard" can show
-  actual matchup pairs instead of a ranked leaderboard.
+- [x] ~~Confirm whether Sleeper ever pairs up real head-to-head matchups~~ —
+  resolved 2026-09-14: this is a **chop-format league** (lowest score each
+  week is out), not head-to-head, so it was never meant to pair matchups.
+  Removed the pairing-detection code and the "no opponents assigned yet"
+  banner from `index.html`; "Live Scoreboard" is now "Live Leaderboard" and
+  is always presented as a ranked leaderboard.
 - [ ] Consider a custom domain for the GitHub Pages site if desired.
