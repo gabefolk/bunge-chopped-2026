@@ -580,13 +580,13 @@
   @keyframes chopSwing {
     /* Brief rest, then a slow wind-up eating most of the cycle, then a fast
        strike down with a little rebound off the board. */
-    100%    { transform: rotate(0deg); }
-    96%    { transform: rotate(0deg); }
-    92%   { transform: rotate(-24deg); }
+    0%    { transform: rotate(0deg); }
+    6%    { transform: rotate(0deg); }
+    80%   { transform: rotate(-24deg); }
     85%   { transform: rotate(-24deg); }
-    80%   { transform: rotate(4deg); }
-    6%   { transform: rotate(-1deg); }
-    0%  { transform: rotate(0deg); }
+    92%   { transform: rotate(4deg); }
+    96%   { transform: rotate(-1deg); }
+    100%  { transform: rotate(0deg); }
   }
   @media (prefers-reduced-motion: reduce) {
     .cleaver { animation: none; }
