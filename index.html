@@ -493,6 +493,38 @@
     .score-row { grid-template-columns: 22px 26px 1fr 56px; padding: 8px 12px; }
     th, td { padding: 8px 10px; }
   }
+
+  /* ---------- Chopping block ---------- */
+  .chop-card {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--critical) 10%, var(--surface)), var(--surface) 60%);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 20px 26px;
+    flex-wrap: wrap;
+  }
+  .chop-visual { flex: none; width: 96px; height: 96px; }
+  .chop-info { flex: 1; min-width: 180px; display: flex; flex-direction: column; gap: 4px; }
+  .chop-tag {
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase;
+    color: var(--critical);
+  }
+  .chop-team { display: flex; align-items: center; gap: 10px; }
+  .chop-name {
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-weight: 600; font-size: 24px; line-height: 1.15;
+  }
+  .chop-pts { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+  .chop-note { font-size: 12.5px; color: var(--ink-muted); }
+  @media (max-width: 520px) {
+    .chop-card { padding: 16px 18px; gap: 16px; }
+    .chop-visual { width: 72px; height: 72px; }
+    .chop-name { font-size: 20px; }
+  }
 </style>
 </head>
 <body>
@@ -506,6 +538,14 @@
 </div>
 
 <div id="top-banner"></div>
+
+<section id="sec-chop">
+  <div class="section-head">
+    <h2>On the Chopping Block</h2>
+    <span class="note" id="chop-note">This week's low score</span>
+  </div>
+  <div class="chop-card liftable" id="chop-card"></div>
+</section>
 
 <section id="sec-stats">
   <div class="section-head">
@@ -767,6 +807,22 @@
     return (Math.round((n || 0) * 100) / 100).toFixed(2);
   }
 
+  const CHOP_SVG = `
+    <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="100%" height="100%">
+      <ellipse cx="48" cy="80" rx="34" ry="7" fill="#000" opacity="0.08"/>
+      <rect x="18" y="46" width="60" height="32" rx="9" fill="#b5793a"/>
+      <rect x="18" y="46" width="60" height="10" rx="5" fill="#a06a30"/>
+      <ellipse cx="48" cy="46" rx="30" ry="12" fill="#e2ad6c"/>
+      <ellipse cx="48" cy="46" rx="30" ry="12" fill="none" stroke="#a06a30" stroke-width="2"/>
+      <ellipse cx="48" cy="46" rx="20" ry="8" fill="none" stroke="#a06a30" stroke-width="1.4" opacity="0.55"/>
+      <ellipse cx="48" cy="46" rx="10" ry="4" fill="none" stroke="#a06a30" stroke-width="1.4" opacity="0.55"/>
+      <g transform="rotate(26 60 26)">
+        <rect x="56" y="6" width="8" height="28" rx="3.5" fill="#4a3423"/>
+        <path d="M60 6 L84 22 L66 36 L52 22 Z" fill="#d7dbe2" stroke="#9096a1" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M60 6 L84 22 L78 26 L58 12 Z" fill="#ffffff" opacity="0.35"/>
+      </g>
+    </svg>`;
+
   // Sleeper account fields (team_name, display_name) are set by league members
   // themselves, so they're untrusted input — escape before ever putting them
   // (or anything derived from them, like tile labels) into innerHTML.
@@ -896,6 +952,40 @@
     document.getElementById('footer-sync').textContent = league.last_synced
       ? `Last synced ${new Date(league.last_synced).toLocaleString()}`
       : '';
+
+    // ---- Chopping block: this week's lowest live score ----
+    const chopCard = document.getElementById('chop-card');
+    const chopNote = document.getElementById('chop-note');
+    if (matchups.length) {
+      const lowestPts = Math.min(...matchups.map(m => m.points));
+      const onTheBlock = matchups.filter(m => m.points === lowestPts);
+      const featured = onTheBlock[0];
+      const featuredTeam = teamByRoster.get(featured.roster_id) || {};
+      chopNote.textContent = `Week ${league.current_week} · lowest live score`;
+      chopCard.innerHTML = `
+        <div class="chop-visual">${CHOP_SVG}</div>
+        <div class="chop-info">
+          <div class="chop-tag">🔪 Up next</div>
+          <div class="chop-team"></div>
+          <div class="chop-pts">${fmt(featured.points)} points</div>
+          <div class="chop-note"></div>
+        </div>`;
+      const teamCell = chopCard.querySelector('.chop-team');
+      teamCell.appendChild(avatarEl(featuredTeam));
+      const nameEl = document.createElement('div');
+      nameEl.className = 'chop-name';
+      nameEl.textContent = featuredTeam.team_name || featuredTeam.display_name || `Roster ${featured.roster_id}`;
+      teamCell.appendChild(nameEl);
+      if (onTheBlock.length > 1) {
+        const others = onTheBlock.slice(1).map(m => {
+          const t = teamByRoster.get(m.roster_id);
+          return t ? (t.team_name || t.display_name) : `Roster ${m.roster_id}`;
+        });
+        chopCard.querySelector('.chop-note').textContent = `Tied with ${others.join(', ')} — could go either way`;
+      }
+    } else {
+      chopCard.innerHTML = '';
+    }
 
     // ---- Live scoreboard ----
     const liveNote = document.getElementById('live-note');
