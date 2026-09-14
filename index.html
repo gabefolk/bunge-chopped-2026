@@ -575,17 +575,17 @@
        modest rotation into the same kind of arcing lift-and-drop a real
        swing has, without the earlier "hinge at the handle" look. */
     transform-origin: 128px -14px;
-    animation: chopSwing 1.3s ease-in-out infinite;
+    animation: chopSwing 3s ease-in-out infinite;
   }
   @keyframes chopSwing {
     /* Brief rest, then a slow wind-up eating most of the cycle, then a fast
        strike down with a little rebound off the board. */
     0%    { transform: rotate(0deg); }
-    6%    { transform: rotate(0deg); }
-    80%   { transform: rotate(-24deg); }
-    85%   { transform: rotate(-24deg); }
-    92%   { transform: rotate(4deg); }
-    96%   { transform: rotate(-1deg); }
+    20%    { transform: rotate(0deg); }
+    23%   { transform: rotate(-24deg); }
+    26%   { transform: rotate(-19deg); }
+    29%   { transform: rotate(-20deg); }
+    50%   { transform: rotate(-20deg); }
     100%  { transform: rotate(0deg); }
   }
   @media (prefers-reduced-motion: reduce) {
