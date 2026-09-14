@@ -539,12 +539,19 @@
        here is the knife stuck in the block; the animation lifts it up
        from there and drops it back down. */
     transform-origin: 73px 2px;
-    animation: chopSwing 2.2s cubic-bezier(.55,0,.1,1) infinite;
+    animation: chopSwing 2.2s ease-in-out infinite;
   }
   @keyframes chopSwing {
-    0%, 12%   { transform: rotate(0deg); }
-    45%       { transform: rotate(-30deg); }
-    58%, 100% { transform: rotate(0deg); }
+    /* Slow wind-up, then a fast strike down with a little rebound off the
+       block, then a hold at "struck" before the next swing — closer to how
+       an actual chop feels than a smooth back-and-forth pendulum. */
+    0%        { transform: rotate(0deg); }
+    10%       { transform: rotate(-12deg); }
+    40%       { transform: rotate(-38deg); }
+    46%       { transform: rotate(-38deg); }
+    54%       { transform: rotate(5deg); }
+    62%       { transform: rotate(-3deg); }
+    70%, 100% { transform: rotate(0deg); }
   }
   @media (prefers-reduced-motion: reduce) {
     .cleaver { animation: none; }
@@ -870,8 +877,9 @@
       <ellipse cx="48" cy="46" rx="20" ry="8" fill="none" stroke="#a06a30" stroke-width="1.4" opacity="0.55"/>
       <ellipse cx="48" cy="46" rx="10" ry="4" fill="none" stroke="#a06a30" stroke-width="1.4" opacity="0.55"/>
       <g class="cleaver">
-        <path d="M76 16 L36 50 Q56 36 76 26 Z" fill="#e4e7ec" stroke="#9096a1" stroke-width="1.5" stroke-linejoin="round"/>
-        <path d="M73 19 L44 44 L49 44 L77 20 Z" fill="#ffffff" opacity="0.4"/>
+        <path d="M77 16 L42 30 L33 49 L77 32 Z" fill="#e4e7ec" stroke="#9096a1" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M74 19 L45 32 L41 40 L76 27 Z" fill="#ffffff" opacity="0.35"/>
+        <circle cx="68" cy="24" r="2.6" fill="none" stroke="#9096a1" stroke-width="1.4" opacity="0.7"/>
         <rect x="70" y="0" width="7" height="18" rx="2" fill="#8b5a2b" stroke="#5c3a1a" stroke-width="1"/>
       </g>
     </svg>`;
