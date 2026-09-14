@@ -1329,11 +1329,27 @@
       });
     });
 
+    // Rostered players' actual points vs. Sleeper's pre-game projection, used
+    // by both Trash Talk Stats (worst single underperformer) and the Boom &
+    // Bust section further down.
+    const rosteredIds = new Set();
+    teams.forEach(t => t.players.forEach(pid => rosteredIds.add(pid)));
+    const boomBustRows = [];
+    rosteredIds.forEach(pid => {
+      const proj = state.projections[pid];
+      const actual = state.stats[pid];
+      if (!proj || !actual) return;
+      const projPts = proj.pts_ppr;
+      const actualPts = actual.pts_ppr;
+      if (projPts == null || actualPts == null || projPts < BOOM_BUST_MIN_PROJECTION) return;
+      const owners = teams.filter(t => t.players.includes(pid)).map(t => t.team_name || t.display_name);
+      boomBustRows.push({ pid, projPts, actualPts, delta: actualPts - projPts, owners });
+    });
+    const worstBustRows = boomBustRows.slice().sort((a, b) => a.delta - b.delta);
+
     // ---- Stat tiles: Trash Talk Stats — blunders & mess-ups only ----
     const statGrid = document.getElementById('stat-grid');
     statGrid.innerHTML = '';
-
-    const zeroCount = matchups.filter(m => m.points === 0).length;
 
     const txnCountByRoster = new Map();
     txns.forEach(tx => { (tx.roster_ids || []).forEach(rid => txnCountByRoster.set(rid, (txnCountByRoster.get(rid) || 0) + 1)); });
@@ -1341,13 +1357,17 @@
     txnCountByRoster.forEach((v, k) => { if (v > txnMax) { txnMax = v; txnLeaderRid = k; } });
 
     const tiles = [];
-    tiles.push({
-      eyebrow: 'Zeroes Club',
-      headline: `${zeroCount} / ${teams.length}`,
-      detail: zeroCount > 0 ? 'teams still snoozing at 0.00 points' : 'everyone showed up to play',
-      rows: matchups.filter(m => m.points === 0).map(m => ({ label: teamLabel(m.roster_id), value: '0.00' })),
-      emptyMessage: "Nobody's asleep — everyone's on the board!",
-    });
+    if (worstBustRows.length && worstBustRows[0].delta < 0) {
+      const worst = worstBustRows[0];
+      const info = playerLabel(worst.pid);
+      tiles.push({
+        eyebrow: 'Biggest Bust',
+        headline: worst.owners[0] || 'Free agent',
+        detail: `${info.name} scored ${fmt(worst.actualPts)} vs. a ${fmt(worst.projPts)} projection — ${fmt(Math.abs(worst.delta))} points under`,
+        rows: worstBustRows.slice(0, 8).map(r => ({ label: `${playerLabel(r.pid).name} (${r.owners[0] || 'Free agent'})`, value: `${r.delta > 0 ? '+' : ''}${fmt(r.delta)}` })),
+        emptyMessage: 'No projections available yet.',
+      });
+    }
     if (benchData[0] && benchData[0].bench > 0) {
       const worstBench = benchData[0];
       tiles.push({
@@ -1622,21 +1642,8 @@
       });
     }
 
-    const rosteredIds = new Set();
-    teams.forEach(t => t.players.forEach(pid => rosteredIds.add(pid)));
-    const boomBustRows = [];
-    rosteredIds.forEach(pid => {
-      const proj = state.projections[pid];
-      const actual = state.stats[pid];
-      if (!proj || !actual) return;
-      const projPts = proj.pts_ppr;
-      const actualPts = actual.pts_ppr;
-      if (projPts == null || actualPts == null || projPts < BOOM_BUST_MIN_PROJECTION) return;
-      const owners = teams.filter(t => t.players.includes(pid)).map(t => t.team_name || t.display_name);
-      boomBustRows.push({ pid, projPts, actualPts, delta: actualPts - projPts, owners });
-    });
     const boomRows = boomBustRows.slice().sort((a, b) => b.delta - a.delta).slice(0, BOOM_BUST_COUNT);
-    const bustRows = boomBustRows.slice().sort((a, b) => a.delta - b.delta).slice(0, BOOM_BUST_COUNT);
+    const bustRows = worstBustRows.slice(0, BOOM_BUST_COUNT);
     renderBoomBustList(document.getElementById('boom-list'), boomRows, 'boom');
     renderBoomBustList(document.getElementById('bust-list'), bustRows, 'bust');
 
