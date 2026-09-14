@@ -177,11 +177,15 @@ and run `node --check` on the extracted inline `<script>` block.
 
 ## TODO / next session
 
-- [ ] **Open the live site in an actual browser** and click through it —
-  everything so far is validated by script/Node, not by looking at it render.
-- [ ] Delete the two now-unnecessary Claude routines at
+- [x] **Open the live site in an actual browser** and click through it —
+  done across several 2026-09-14 sessions (chop animation, favicon, layout
+  rework, trash talk/insights content all iterated on live in-browser).
+- [x] Delete the two now-unnecessary Claude routines at
   https://claude.ai/code/routines (`Bunge Chopped - Sunday day games refresh`,
-  `Bunge Chopped - SNF-MNF-TNF refresh`).
+  `Bunge Chopped - SNF-MNF-TNF refresh`) — confirmed gone as of 2026-09-14
+  (checked via the remote-trigger API: `list` returns none, and direct
+  lookups of both old trigger IDs 404). Already deleted before this check;
+  exactly when/how isn't recorded.
 - [ ] Decide whether to also delete/archive the old Claude Artifact
   (https://claude.ai/code/artifact/5a8ee8d7-edb6-4c55-9107-1e3e4ee545e7), or
   just leave it be now that it's not the canonical version.
