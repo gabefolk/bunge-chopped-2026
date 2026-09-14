@@ -202,8 +202,26 @@
   .sync-dot.stale { background: var(--warning); box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning) 25%, transparent); }
   .sync-dot.error { background: var(--critical); box-shadow: 0 0 0 3px color-mix(in srgb, var(--critical) 25%, transparent); }
 
-  /* ---------- Section shell ---------- */
-  section { margin-bottom: 40px; }
+  /* ---------- Section shell: a 12-column "board" grid holding every section
+     as an evenly-gapped chunk, some spanning wider than others (Pinterest-
+     board style) instead of one plain full-width vertical stack. ---------- */
+  section { margin-bottom: 0; min-width: 0; }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+    align-items: start;
+    margin-bottom: 64px;
+  }
+  #sec-chop { grid-column: span 4; }
+  #sec-stats { grid-column: span 8; }
+  #sec-insights, #sec-boombust, #sec-bench, #sec-live, #sec-standings, #sec-roster {
+    grid-column: span 12;
+  }
+  .chop-card { height: 100%; box-sizing: border-box; }
+  @media (max-width: 860px) {
+    #sec-chop, #sec-stats { grid-column: span 12; }
+  }
   .section-head {
     display: flex;
     align-items: baseline;
@@ -318,13 +336,17 @@
     align-items: start;
     gap: 14px;
   }
+  #stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 480px) { #stat-grid { grid-template-columns: 1fr; } }
   .stat-card {
     position: relative;
+    z-index: 1;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 18px;
     box-shadow: var(--shadow);
   }
+  .stat-card.is-expanded { z-index: 20; }
   .stat-tile {
     all: unset;
     box-sizing: border-box;
@@ -483,6 +505,13 @@
     box-shadow: var(--shadow);
   }
   select#team-picker:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .roster-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 20px 22px;
+  }
   .roster-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -540,7 +569,7 @@
     isolation: isolate;
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 16px;
     background:
       radial-gradient(60% 90% at 14% 30%, rgba(255, 130, 70, 0.28), transparent 70%),
       radial-gradient(80% 120% at 90% 100%, rgba(180, 20, 20, 0.35), transparent 60%),
@@ -548,7 +577,7 @@
     border: 1px solid rgba(255, 90, 60, 0.35);
     border-radius: 26px;
     box-shadow: 0 14px 46px -14px rgba(200, 30, 20, 0.55), 0 0 0 1px rgba(0,0,0,0.2) inset;
-    padding: 34px 38px;
+    padding: 18px 24px;
     flex-wrap: wrap;
     color: #fbe9e2;
   }
@@ -563,8 +592,8 @@
   }
   .chop-visual {
     flex: none;
-    width: 148px;
-    height: 148px;
+    width: 84px;
+    height: 84px;
     filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.55));
   }
   .chop-visual svg { overflow: visible; } /* raised cleaver position goes above the 96x96 viewBox */
@@ -592,34 +621,34 @@
   @media (prefers-reduced-motion: reduce) {
     .cleaver { animation: none; }
   }
-  .chop-info { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
+  .chop-info { flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 4px; }
   .chop-tag {
     font-family: 'Fredoka', system-ui, sans-serif;
-    font-size: 13.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
     color: #ff9b7a;
     text-shadow: 0 0 16px rgba(255, 90, 50, 0.65);
   }
-  .chop-team { display: flex; align-items: center; gap: 14px; }
-  .chop-team .avatar { width: 44px; height: 44px; font-size: 16px; box-shadow: 0 0 0 3px rgba(255,255,255,0.12); }
+  .chop-team { display: flex; align-items: center; gap: 10px; }
+  .chop-team .avatar { width: 30px; height: 30px; font-size: 13px; box-shadow: 0 0 0 3px rgba(255,255,255,0.12); }
   .chop-name {
     font-family: 'Fredoka', system-ui, sans-serif;
-    font-weight: 600; font-size: 38px; line-height: 1.1;
+    font-weight: 600; font-size: 21px; line-height: 1.1;
     color: #fff;
     text-shadow: 0 3px 14px rgba(0,0,0,0.6);
   }
   .chop-pts {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 21px; font-weight: 700;
+    font-size: 14px; font-weight: 700;
     color: #ffb199;
     text-shadow: 0 0 18px rgba(255, 90, 50, 0.5);
     font-variant-numeric: tabular-nums;
   }
-  .chop-note { font-size: 13px; color: #e2b6a8; }
+  .chop-note { font-size: 11px; color: #e2b6a8; }
   @media (max-width: 520px) {
-    .chop-card { padding: 24px 24px; gap: 20px; }
-    .chop-visual { width: 100px; height: 100px; }
-    .chop-name { font-size: 26px; }
-    .chop-pts { font-size: 17px; }
+    .chop-card { padding: 20px 22px; gap: 16px; }
+    .chop-visual { width: 80px; height: 80px; }
+    .chop-name { font-size: 22px; }
+    .chop-pts { font-size: 15px; }
   }
 </style>
 </head>
@@ -635,6 +664,7 @@
 
 <div id="top-banner"></div>
 
+<div class="board">
 <section id="sec-chop">
   <div class="section-head">
     <h2>On the Chopping Block</h2>
@@ -646,7 +676,7 @@
 <section id="sec-stats">
   <div class="section-head">
     <h2>Trash Talk Stats</h2>
-    <span class="note">Fresh nonsense, fetched live from Sleeper</span>
+    <span class="note">Blunders &amp; mess-ups, fetched live from Sleeper</span>
   </div>
   <div class="stat-grid" id="stat-grid"></div>
 </section>
@@ -718,17 +748,20 @@
   <div class="roster-controls">
     <select id="team-picker"></select>
   </div>
-  <div class="roster-grid">
-    <div>
-      <div class="roster-col-label">Starters</div>
-      <div id="roster-starters"></div>
-    </div>
-    <div>
-      <div class="roster-col-label">Bench</div>
-      <div id="roster-bench"></div>
+  <div class="roster-card liftable">
+    <div class="roster-grid">
+      <div>
+        <div class="roster-col-label">Starters</div>
+        <div id="roster-starters"></div>
+      </div>
+      <div>
+        <div class="roster-col-label">Bench</div>
+        <div id="roster-bench"></div>
+      </div>
     </div>
   </div>
 </section>
+</div>
 
 <footer>
   <span>Powered by the Sleeper API, spite, and mild office rivalry.</span>
@@ -1046,6 +1079,7 @@
         const expanded = btn.getAttribute('aria-expanded') === 'true';
         btn.setAttribute('aria-expanded', String(!expanded));
         panel.hidden = expanded;
+        card.classList.toggle('is-expanded', !expanded);
       });
 
       card.appendChild(btn);
@@ -1240,50 +1274,47 @@
       standingsBody.appendChild(tr);
     });
 
-    // ---- Stat tiles ----
-    const statGrid = document.getElementById('stat-grid');
-    statGrid.innerHTML = '';
-
-    const byPoints = matchups.slice().sort((a, b) => b.points - a.points);
-    const leader = byPoints[0];
-    const leaderTeam = leader ? teamByRoster.get(leader.roster_id) : null;
-    const zeroCount = matchups.filter(m => m.points === 0).length;
-
-    const addsByRoster = new Map();
-    const txnCountByRoster = new Map();
-    txns.forEach(tx => {
-      (tx.roster_ids || []).forEach(rid => txnCountByRoster.set(rid, (txnCountByRoster.get(rid) || 0) + 1));
-      if (tx.adds) Object.values(tx.adds).forEach(rid => addsByRoster.set(rid, (addsByRoster.get(rid) || 0) + 1));
-    });
-    let waiverLeaderRid = null, waiverMax = 0;
-    addsByRoster.forEach((v, k) => { if (v > waiverMax) { waiverMax = v; waiverLeaderRid = k; } });
-    let txnLeaderRid = null, txnMax = 0;
-    txnCountByRoster.forEach((v, k) => { if (v > txnMax) { txnMax = v; txnLeaderRid = k; } });
-
-    const rankByRoster = new Map(byPoints.map((m, i) => [m.roster_id, i + 1]));
-    let riserTeam = null, riserDelta = -Infinity;
-    teams.forEach(t => {
-      if (!t.draft_position) return;
-      const r = rankByRoster.get(t.roster_id);
-      if (r == null) return;
-      const delta = t.draft_position - r;
-      if (delta > riserDelta) { riserDelta = delta; riserTeam = t; }
-    });
-
     function teamLabel(rid) {
       const t = teamByRoster.get(rid);
       return t ? (t.team_name || t.display_name) : `Roster ${rid}`;
     }
 
-    const tiles = [];
-    if (leader) {
-      tiles.push({
-        eyebrow: `Week ${league.current_week} Top Dog`,
-        headline: leaderTeam ? (leaderTeam.team_name || leaderTeam.display_name) : '—',
-        detail: `${fmt(leader.points)} points and bragging rights`,
-        rows: byPoints.slice(0, 6).map((m, i) => ({ label: `${i + 1}. ${teamLabel(m.roster_id)}`, value: fmt(m.points) })),
+    // ---- Shared: bench points left on the table & lineup landmines (used by
+    // Trash Talk Stats below and again by the Bench/Insights sections further
+    // down, so each is only computed once). ----
+    const benchData = matchups.map(m => {
+      const totalPlayed = Object.values(m.players_points || {}).reduce((a, b) => a + b, 0);
+      const bench = Math.max(0, totalPlayed - m.points);
+      return { roster_id: m.roster_id, bench };
+    }).sort((a, b) => b.bench - a.bench);
+
+    const UNAVAILABLE_STATUS = new Set(['Out', 'Doubtful', 'IR', 'PUP', 'NA']);
+    const landmines = [];
+    const landmineCountByRoster = new Map();
+    teams.forEach(t => {
+      t.starters.forEach(pid => {
+        const p = state.players[pid];
+        if (!p) return;
+        const flag = p.status === 'Inactive' ? 'Inactive' : (UNAVAILABLE_STATUS.has(p.injury_status) ? p.injury_status : null);
+        if (flag) {
+          landmines.push({ rid: t.roster_id, team: teamLabel(t.roster_id), player: playerLabel(pid).name, flag });
+          landmineCountByRoster.set(t.roster_id, (landmineCountByRoster.get(t.roster_id) || 0) + 1);
+        }
       });
-    }
+    });
+
+    // ---- Stat tiles: Trash Talk Stats — blunders & mess-ups only ----
+    const statGrid = document.getElementById('stat-grid');
+    statGrid.innerHTML = '';
+
+    const zeroCount = matchups.filter(m => m.points === 0).length;
+
+    const txnCountByRoster = new Map();
+    txns.forEach(tx => { (tx.roster_ids || []).forEach(rid => txnCountByRoster.set(rid, (txnCountByRoster.get(rid) || 0) + 1)); });
+    let txnLeaderRid = null, txnMax = 0;
+    txnCountByRoster.forEach((v, k) => { if (v > txnMax) { txnMax = v; txnLeaderRid = k; } });
+
+    const tiles = [];
     tiles.push({
       eyebrow: 'Zeroes Club',
       headline: `${zeroCount} / ${teams.length}`,
@@ -1291,25 +1322,32 @@
       rows: matchups.filter(m => m.points === 0).map(m => ({ label: teamLabel(m.roster_id), value: '0.00' })),
       emptyMessage: "Nobody's asleep — everyone's on the board!",
     });
-    if (waiverLeaderRid != null) {
-      const addEvents = [];
-      txns.forEach(tx => {
-        if (tx.adds) Object.entries(tx.adds).forEach(([pid, rid]) => addEvents.push({ rid, pid, created: tx.created || 0 }));
-      });
-      addEvents.sort((a, b) => b.created - a.created);
+    if (benchData[0] && benchData[0].bench > 0) {
+      const worstBench = benchData[0];
       tiles.push({
-        eyebrow: 'Waiver Wire Hustle',
-        headline: teamLabel(waiverLeaderRid),
-        detail: `${waiverMax} add${waiverMax === 1 ? '' : 's'} this week — no chill`,
-        rows: addEvents.slice(0, 8).map(e => ({ label: teamLabel(e.rid), value: playerLabel(e.pid).name })),
-        emptyMessage: "Total waiver silence. Scared money don't make money.",
+        eyebrow: 'Benched a Fortune',
+        headline: teamLabel(worstBench.roster_id),
+        detail: `${fmt(worstBench.bench)} points rotting on the bench this week — brutal lineup call`,
+        rows: benchData.filter(b => b.bench > 0).slice(0, 8).map(b => ({ label: teamLabel(b.roster_id), value: fmt(b.bench) })),
+        emptyMessage: 'No bench points wasted yet.',
+      });
+    }
+    if (landmineCountByRoster.size) {
+      let landmineLeaderRid = null, landmineMax = 0;
+      landmineCountByRoster.forEach((v, k) => { if (v > landmineMax) { landmineMax = v; landmineLeaderRid = k; } });
+      tiles.push({
+        eyebrow: 'Lineup Landmines',
+        headline: teamLabel(landmineLeaderRid),
+        detail: `${landmineMax} starter${landmineMax === 1 ? '' : 's'} Out/Inactive and still in the lineup — oof`,
+        rows: landmines.filter(l => l.rid === landmineLeaderRid).map(l => ({ label: l.player, value: l.flag })),
+        emptyMessage: 'No landmines in this lineup.',
       });
     }
     if (txnLeaderRid != null) {
       tiles.push({
         eyebrow: 'Trigger Finger',
         headline: teamLabel(txnLeaderRid),
-        detail: `${txnMax} roster move${txnMax === 1 ? '' : 's'} this week — click to see the damage`,
+        detail: `${txnMax} roster move${txnMax === 1 ? '' : 's'} this week — panic much?`,
         rows: Array.from(txnCountByRoster.entries())
           .sort((a, b) => b[1] - a[1])
           .slice(0, 8)
@@ -1324,22 +1362,6 @@
         emptyMessage: "Nobody's touched their roster. Bold strategy.",
       });
     }
-    if (riserTeam) {
-      const riserRows = teams
-        .filter(t => t.draft_position && rankByRoster.get(t.roster_id) != null)
-        .map(t => {
-          const r = rankByRoster.get(t.roster_id);
-          return { label: t.team_name || t.display_name, value: `#${t.draft_position} → #${r} (${t.draft_position - r > 0 ? '+' : ''}${t.draft_position - r})`, delta: t.draft_position - r };
-        })
-        .sort((a, b) => b.delta - a.delta)
-        .slice(0, 8);
-      tiles.push({
-        eyebrow: 'Draft Day Redemption',
-        headline: riserTeam.team_name || riserTeam.display_name,
-        detail: `Drafted #${riserTeam.draft_position}, currently #${rankByRoster.get(riserTeam.roster_id)} — nobody saw this coming`,
-        rows: riserRows,
-      });
-    }
 
     renderStatCards(statGrid, tiles, 'stat');
 
@@ -1347,16 +1369,6 @@
     const insightsGrid = document.getElementById('insights-grid');
     const insightTiles = [];
 
-    const UNAVAILABLE_STATUS = new Set(['Out', 'Doubtful', 'IR', 'PUP', 'NA']);
-    const landmines = [];
-    teams.forEach(t => {
-      t.starters.forEach(pid => {
-        const p = state.players[pid];
-        if (!p) return;
-        const flag = p.status === 'Inactive' ? 'Inactive' : (UNAVAILABLE_STATUS.has(p.injury_status) ? p.injury_status : null);
-        if (flag) landmines.push({ team: teamLabel(t.roster_id), player: playerLabel(pid).name, flag });
-      });
-    });
     insightTiles.push({
       eyebrow: 'Lineup Landmines',
       headline: `${landmines.length} starter${landmines.length === 1 ? '' : 's'}`,
@@ -1397,6 +1409,150 @@
       detail: posSorted[0] ? `${fmt(posSorted[0][1])} combined points scored by ${posSorted[0][0]}s this week` : 'no scoring yet',
       rows: posSorted.map(([pos, pts]) => ({ label: pos, value: fmt(pts) })),
     });
+
+    // ---- The rest of these only show up when they're actually notable, so
+    // the mix of insights shifts day to day as injuries, waivers, and live
+    // scores move — instead of the same fixed set every time. ----
+
+    // One-Man Team: a starter carrying more than half their team's points.
+    {
+      let bestRid = null, bestPid = null, bestShare = 0, bestPts = 0, bestTotal = 0;
+      matchups.forEach(m => {
+        if (!m.points) return;
+        const starterSet = new Set(m.starters || []);
+        Object.entries(m.players_points || {}).forEach(([pid, pts]) => {
+          if (!starterSet.has(pid)) return;
+          const share = pts / m.points;
+          if (share > bestShare) { bestShare = share; bestRid = m.roster_id; bestPid = pid; bestPts = pts; bestTotal = m.points; }
+        });
+      });
+      if (bestRid != null && bestShare >= 0.5) {
+        const info = playerLabel(bestPid);
+        insightTiles.push({
+          eyebrow: 'One-Man Team',
+          headline: teamLabel(bestRid),
+          detail: `${info.name} alone is ${Math.round(bestShare * 100)}% of their ${fmt(bestTotal)} points this week`,
+          rows: [{ label: info.name, value: `${fmt(bestPts)} of ${fmt(bestTotal)}` }],
+        });
+      }
+    }
+
+    // Walking Wounded: whole-roster injury count (not just starters), so it
+    // catches teams hoarding hurt players on the bench too.
+    {
+      const ANY_INJURY = new Set(['Questionable', 'Doubtful', 'Out', 'IR', 'PUP', 'NA']);
+      const injuryCountByRoster = new Map();
+      teams.forEach(t => {
+        let count = 0;
+        t.players.forEach(pid => {
+          const p = state.players[pid];
+          if (!p) return;
+          if (p.status === 'Inactive' || ANY_INJURY.has(p.injury_status)) count++;
+        });
+        injuryCountByRoster.set(t.roster_id, count);
+      });
+      const worst = Array.from(injuryCountByRoster.entries()).sort((a, b) => b[1] - a[1])[0];
+      if (worst && worst[1] >= 3) {
+        insightTiles.push({
+          eyebrow: 'Walking Wounded',
+          headline: teamLabel(worst[0]),
+          detail: `${worst[1]} rostered players carrying an injury designation right now`,
+          rows: Array.from(injuryCountByRoster.entries()).filter(([, c]) => c > 0).sort((a, b) => b[1] - a[1]).map(([rid, c]) => ({ label: teamLabel(rid), value: `${c} flagged` })),
+        });
+      }
+    }
+
+    // FAAB Whale: most waiver budget already burned this season.
+    {
+      const spenders = teams.filter(t => (t.waiver_budget_used || 0) > 0).sort((a, b) => b.waiver_budget_used - a.waiver_budget_used);
+      if (spenders.length) {
+        insightTiles.push({
+          eyebrow: 'FAAB Whale',
+          headline: teamLabel(spenders[0].roster_id),
+          detail: `${spenders[0].waiver_budget_used} waiver budget spent this season already`,
+          rows: spenders.map(t => ({ label: teamLabel(t.roster_id), value: `${t.waiver_budget_used}` })),
+        });
+      }
+    }
+
+    // Set It and Forget It: fewest roster moves all season, while the league
+    // as a whole has clearly been active.
+    {
+      const withMoves = teams.filter(t => typeof t.total_moves === 'number');
+      const maxMoves = withMoves.length ? Math.max(...withMoves.map(t => t.total_moves)) : 0;
+      if (maxMoves > 0) {
+        const quietest = withMoves.slice().sort((a, b) => a.total_moves - b.total_moves)[0];
+        insightTiles.push({
+          eyebrow: 'Set It and Forget It',
+          headline: teamLabel(quietest.roster_id),
+          detail: `Just ${quietest.total_moves} roster move${quietest.total_moves === 1 ? '' : 's'} all season — autopilot engaged`,
+          rows: withMoves.slice().sort((a, b) => a.total_moves - b.total_moves).map(t => ({ label: teamLabel(t.roster_id), value: `${t.total_moves} moves` })),
+        });
+      }
+    }
+
+    // Schedule Luck: standings rank (wins) vs. scoring rank (points for) —
+    // a big gap either way is the classic "are they actually good" tell.
+    {
+      const byWins = teams.slice().sort((a, b) => (b.wins - b.losses) - (a.wins - a.losses) || b.fpts - a.fpts);
+      const byFpts = teams.slice().sort((a, b) => b.fpts - a.fpts);
+      const winRank = new Map(byWins.map((t, i) => [t.roster_id, i + 1]));
+      const fptsRank = new Map(byFpts.map((t, i) => [t.roster_id, i + 1]));
+      let luckyRid = null, luckyDelta = 0;
+      teams.forEach(t => {
+        const delta = fptsRank.get(t.roster_id) - winRank.get(t.roster_id);
+        if (delta > luckyDelta) { luckyDelta = delta; luckyRid = t.roster_id; }
+      });
+      if (luckyRid != null && luckyDelta >= 2) {
+        insightTiles.push({
+          eyebrow: 'Schedule Luck',
+          headline: teamLabel(luckyRid),
+          detail: `#${winRank.get(luckyRid)} in the standings but only #${fptsRank.get(luckyRid)} in points scored — living charmed`,
+          rows: teams.map(t => ({ label: teamLabel(t.roster_id), value: `record #${winRank.get(t.roster_id)} · points #${fptsRank.get(t.roster_id)}` })),
+        });
+      }
+    }
+
+    // Closest Call: the tightest gap anywhere on the live board right now.
+    {
+      const ranked = matchups.slice().sort((a, b) => b.points - a.points);
+      if (ranked.length >= 2) {
+        let minGap = Infinity, idx = 0;
+        for (let i = 0; i < ranked.length - 1; i++) {
+          const gap = ranked[i].points - ranked[i + 1].points;
+          if (gap < minGap) { minGap = gap; idx = i; }
+        }
+        const a = ranked[idx], b = ranked[idx + 1];
+        insightTiles.push({
+          eyebrow: 'Closest Call',
+          headline: `${teamLabel(a.roster_id)} vs ${teamLabel(b.roster_id)}`,
+          detail: `Separated by just ${fmt(minGap)} point${minGap === 1 ? '' : 's'} on the live board`,
+          rows: [{ label: teamLabel(a.roster_id), value: fmt(a.points) }, { label: teamLabel(b.roster_id), value: fmt(b.points) }],
+        });
+      }
+    }
+
+    // Rookie Reliance: teams leaning hard on true rookies in their lineup.
+    {
+      const rookieCounts = new Map();
+      teams.forEach(t => {
+        let count = 0;
+        t.starters.forEach(pid => {
+          const p = state.players[pid];
+          if (p && p.years_exp === 0) count++;
+        });
+        rookieCounts.set(t.roster_id, count);
+      });
+      const top = Array.from(rookieCounts.entries()).sort((a, b) => b[1] - a[1])[0];
+      if (top && top[1] >= 2) {
+        insightTiles.push({
+          eyebrow: 'Rookie Reliance',
+          headline: teamLabel(top[0]),
+          detail: `Starting ${top[1]} true rookies this week — living dangerously`,
+          rows: Array.from(rookieCounts.entries()).filter(([, c]) => c > 0).sort((a, b) => b[1] - a[1]).map(([rid, c]) => ({ label: teamLabel(rid), value: `${c} rookie${c === 1 ? '' : 's'}` })),
+        });
+      }
+    }
 
     renderStatCards(insightsGrid, insightTiles, 'insight');
 
@@ -1461,11 +1617,6 @@
     // ---- Bench points ----
     const benchList = document.getElementById('bench-list');
     benchList.innerHTML = '';
-    const benchData = matchups.map(m => {
-      const totalPlayed = Object.values(m.players_points || {}).reduce((a, b) => a + b, 0);
-      const bench = Math.max(0, totalPlayed - m.points);
-      return { roster_id: m.roster_id, bench };
-    }).sort((a, b) => b.bench - a.bench);
     const maxBench = Math.max(1, ...benchData.map(b => b.bench));
     benchData.forEach(b => {
       const t = teamByRoster.get(b.roster_id);
