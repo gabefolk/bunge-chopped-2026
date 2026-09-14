@@ -1,0 +1,1090 @@
+<title>Bunge Chopped</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f8f3fc;
+    --surface: #ffffff;
+    --surface-2: #f2e8fa;
+    --surface-3: #e6d5f5;
+    --ink: #261a35;
+    --ink-muted: #726286;
+    --ink-faint: #a094b3;
+    --border: #e6d9f2;
+    --accent: #ff6b57;
+    --accent-strong: #e2503d;
+    --accent-tint: #ffe9e4;
+    --accent-ink: #3a0f08;
+    --accent2: #ffc93f;
+    --accent2-tint: #fff3d6;
+    --accent3: #1fb8a3;
+
+    --good: #0ca30c;
+    --warning: #b97a00;
+    --critical: #d03b3b;
+
+    --pos-qb: #2a78d6;
+    --pos-rb: #eb6834;
+    --pos-wr: #1baf7a;
+    --pos-te: #b8860b;
+
+    --avatar-a: #ff6b57;
+    --avatar-b: #1fb8a3;
+    --avatar-c: #5b7fe0;
+    --avatar-d: #e0a12a;
+    --avatar-e: #b565e8;
+    --avatar-f: #38ac6a;
+
+    --shadow: 0 2px 4px rgba(120, 40, 90, 0.06), 0 14px 30px -16px rgba(120, 40, 90, 0.28);
+    --shadow-lift: 0 4px 8px rgba(120, 40, 90, 0.08), 0 18px 34px -16px rgba(120, 40, 90, 0.32);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #1b1730;
+      --surface: #241f3d;
+      --surface-2: #2c2650;
+      --surface-3: #372f61;
+      --ink: #f4f0fb;
+      --ink-muted: #b3a8cf;
+      --ink-faint: #7d7299;
+      --border: #3a3260;
+      --accent: #ff8a72;
+      --accent-strong: #ffab98;
+      --accent-tint: #3a2434;
+      --accent-ink: #fff3ef;
+      --accent2: #ffd766;
+      --accent2-tint: #3c331c;
+      --accent3: #4fd6bf;
+
+      --good: #4fce4f;
+      --warning: #fab219;
+      --critical: #ec6b6b;
+
+      --pos-qb: #3987e5;
+      --pos-rb: #d95926;
+      --pos-wr: #199e70;
+      --pos-te: #c98500;
+
+      --avatar-a: #ff8a72;
+      --avatar-b: #4fd6bf;
+      --avatar-c: #7f9aff;
+      --avatar-d: #ffc65c;
+      --avatar-e: #cf8bf5;
+      --avatar-f: #63d488;
+
+      --shadow: 0 2px 4px rgba(0, 0, 0, 0.35), 0 16px 34px -18px rgba(0, 0, 0, 0.7);
+      --shadow-lift: 0 4px 10px rgba(0, 0, 0, 0.4), 0 20px 38px -18px rgba(0, 0, 0, 0.75);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #1b1730;
+    --surface: #241f3d;
+    --surface-2: #2c2650;
+    --surface-3: #372f61;
+    --ink: #f4f0fb;
+    --ink-muted: #b3a8cf;
+    --ink-faint: #7d7299;
+    --border: #3a3260;
+    --accent: #ff8a72;
+    --accent-strong: #ffab98;
+    --accent-tint: #3a2434;
+    --accent-ink: #fff3ef;
+    --accent2: #ffd766;
+    --accent2-tint: #3c331c;
+    --accent3: #4fd6bf;
+
+    --good: #4fce4f;
+    --warning: #fab219;
+    --critical: #ec6b6b;
+
+    --pos-qb: #3987e5;
+    --pos-rb: #d95926;
+    --pos-wr: #199e70;
+    --pos-te: #c98500;
+
+    --avatar-a: #ff8a72;
+    --avatar-b: #4fd6bf;
+    --avatar-c: #7f9aff;
+    --avatar-d: #ffc65c;
+    --avatar-e: #cf8bf5;
+    --avatar-f: #63d488;
+
+    --shadow: 0 2px 4px rgba(0, 0, 0, 0.35), 0 16px 34px -18px rgba(0, 0, 0, 0.7);
+    --shadow-lift: 0 4px 10px rgba(0, 0, 0, 0.4), 0 20px 38px -18px rgba(0, 0, 0, 0.75);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+    padding: 0 max(16px, calc((100vw - 1120px) / 2));
+    padding-block: 28px 64px;
+    line-height: 1.5;
+  }
+
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+
+  .display {
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-weight: 600;
+  }
+
+  .eyebrow {
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--accent-strong);
+  }
+
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+
+  a { color: var(--accent-strong); }
+
+  /* ---------- Masthead ---------- */
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 26px 30px;
+    margin-bottom: 32px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, var(--accent-tint), var(--surface) 65%);
+    border: 1px solid var(--border);
+  }
+  .masthead h1 {
+    font-size: clamp(32px, 5.4vw, 50px);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .masthead .sub {
+    color: var(--ink-muted);
+    font-size: 13.5px;
+    margin-top: 4px;
+  }
+  .sync-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    box-shadow: var(--shadow);
+  }
+  .sync-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--good);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--good) 25%, transparent);
+  }
+
+  /* ---------- Section shell ---------- */
+  section { margin-bottom: 40px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .section-head h2 {
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 23px;
+  }
+  .section-head .note { font-size: 12.5px; font-weight: 600; color: var(--ink-faint); }
+
+  .note-banner {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: var(--accent2-tint);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 16px;
+  }
+  .note-banner b { color: var(--ink); }
+
+  /* ---------- Interactive lift ---------- */
+  .liftable { transition: transform 160ms ease, box-shadow 160ms ease; }
+  .liftable:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+  @media (prefers-reduced-motion: reduce) {
+    .liftable, .liftable:hover { transition: none; transform: none; }
+  }
+
+  /* ---------- Live scoreboard ---------- */
+  .scoreboard {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .score-row {
+    display: grid;
+    grid-template-columns: 28px 34px 1fr 70px;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .score-row:last-child { border-bottom: none; }
+  .score-row:hover { background: var(--surface-2); }
+  .score-rank { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-faint); }
+  .score-team { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .score-name { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .score-bar-track { height: 7px; border-radius: 999px; background: var(--surface-2); margin-top: 5px; overflow: hidden; }
+  .score-bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  .score-pts { font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 14.5px; text-align: right; font-variant-numeric: tabular-nums; color: var(--accent-strong); }
+
+  /* ---------- Avatar ---------- */
+  .avatar {
+    flex: none;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-weight: 600; font-size: 12px;
+    color: #fff;
+  }
+
+  /* ---------- Standings table ---------- */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; min-width: 560px; }
+  tbody tr:hover td { background: var(--surface-2); }
+  tbody tr.podium td { background: var(--accent2-tint); }
+  th {
+    text-align: left;
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13.5px;
+  }
+  tr:last-child td { border-bottom: none; }
+  th.num, td.num { text-align: right; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+  .team-cell { display: flex; align-items: center; gap: 10px; }
+  .team-cell .name { font-weight: 700; }
+  .team-cell .owner { color: var(--ink-faint); font-size: 12px; }
+
+  /* ---------- Stat tiles ---------- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    align-items: start;
+    gap: 14px;
+  }
+  .stat-card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+  }
+  .stat-tile {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    cursor: pointer;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-radius: 18px;
+  }
+  .stat-tile:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 12px; }
+  .stat-tile-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .stat-tile .eyebrow { color: var(--accent-strong); }
+  .stat-tile .headline {
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.15;
+  }
+  .stat-tile .detail { font-size: 12.5px; color: var(--ink-muted); }
+  .chevron {
+    flex: none;
+    margin-top: 3px;
+    color: var(--ink-faint);
+    transition: transform 150ms ease;
+  }
+  .stat-tile[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+  .stat-detail {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface-2);
+    padding: 10px 18px 12px;
+    box-shadow: var(--shadow-lift);
+    z-index: 30;
+    max-height: min(360px, 60vh);
+    overflow-y: auto;
+    animation: reveal 160ms ease-out;
+  }
+  .stat-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 7px 0;
+    font-size: 12.5px;
+  }
+  .stat-detail-row + .stat-detail-row { border-top: 1px dashed var(--border); }
+  .stat-detail-row .label { color: var(--ink); font-weight: 500; }
+  .stat-detail-row .value { font-family: 'IBM Plex Mono', monospace; color: var(--ink-muted); text-align: right; white-space: nowrap; }
+  .stat-detail-empty { font-size: 12.5px; color: var(--ink-faint); padding: 8px 0; }
+  .stat-detail-row-btn {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 7px 0;
+    font-size: 12.5px;
+  }
+  .stat-detail-row-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 6px; }
+  .stat-detail-row-btn .value { display: inline-flex; align-items: center; gap: 5px; }
+  .chevron-sm { flex: none; width: 11px; height: 11px; color: var(--ink-faint); transition: transform 150ms ease; }
+  .stat-detail-row-btn[aria-expanded="true"] .chevron-sm { transform: rotate(180deg); }
+  .stat-detail-sub { padding: 2px 0 8px 4px; animation: reveal 160ms ease-out; }
+  .stat-detail-sub-row {
+    font-size: 12px;
+    color: var(--ink-muted);
+    padding: 4px 0 4px 14px;
+    border-left: 2px solid var(--border);
+  }
+  .stat-detail-sub-row + .stat-detail-sub-row { margin-top: 2px; }
+  @keyframes reveal { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    .chevron, .chevron-sm { transition: none; }
+    .stat-detail, .stat-detail-sub { animation: none; }
+  }
+
+  /* ---------- Bench chart ---------- */
+  .bench-list {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 6px 18px;
+  }
+  .bench-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 56px;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .bench-row:last-child { border-bottom: none; }
+  .bench-row .name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bench-track { height: 9px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+  .bench-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent2), var(--accent)); }
+  .bench-val { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; text-align: right; color: var(--ink-muted); }
+
+  /* ---------- Roster detail ---------- */
+  .roster-controls {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
+  }
+  select#team-picker {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px; font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow);
+  }
+  select#team-picker:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .roster-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 640px) { .roster-grid { grid-template-columns: 1fr; } }
+  .roster-col-label {
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-size: 11px; letter-spacing: 0.03em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 8px;
+  }
+  .player-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 52px;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .player-row:last-child { border-bottom: none; }
+  .pos-badge {
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-size: 10.5px; font-weight: 600;
+    color: #fff;
+    border-radius: 999px;
+    text-align: center;
+    padding: 4px 0;
+    width: 36px;
+  }
+  .player-name { font-size: 13px; font-weight: 600; }
+  .player-team { color: var(--ink-faint); font-size: 11.5px; margin-left: 5px; }
+  .player-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; }
+
+  footer {
+    margin-top: 48px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-faint);
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+
+  @media (max-width: 520px) {
+    .score-row { grid-template-columns: 22px 26px 1fr 56px; padding: 8px 12px; }
+    th, td { padding: 8px 10px; }
+  }
+</style>
+
+<div class="masthead">
+  <div>
+    <h1 class="display"><span id="league-name">Bunge Chopped</span> 🔪</h1>
+    <div class="sub" id="league-sub">Season — · Week —</div>
+  </div>
+  <div class="sync-pill"><span class="sync-dot"></span><span id="sync-label">syncing…</span></div>
+</div>
+
+<section id="sec-stats">
+  <div class="section-head">
+    <h2>Trash Talk Stats</h2>
+    <span class="note">Fresh nonsense, synced live</span>
+  </div>
+  <div class="stat-grid" id="stat-grid"></div>
+</section>
+
+<section id="sec-insights">
+  <div class="section-head">
+    <h2>League Insights</h2>
+    <span class="note">Patterns we found digging through the data</span>
+  </div>
+  <div class="stat-grid" id="insights-grid"></div>
+</section>
+
+<section id="sec-bench">
+  <div class="section-head">
+    <h2>Bench Points Left on the Table</h2>
+    <span class="note">Points quietly rotting on the sideline</span>
+  </div>
+  <div class="bench-list liftable" id="bench-list"></div>
+</section>
+
+<section id="sec-live">
+  <div class="section-head">
+    <h2>Live Scoreboard</h2>
+    <span class="note" id="live-note"></span>
+  </div>
+  <div id="live-banner"></div>
+  <div class="scoreboard liftable" id="live-scoreboard"></div>
+</section>
+
+<section id="sec-standings">
+  <div class="section-head">
+    <h2>Standings</h2>
+    <span class="note">Sorted by record, then live points</span>
+  </div>
+  <div class="table-wrap liftable">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Team</th><th class="num">W&nbsp;-&nbsp;L&nbsp;-&nbsp;T</th><th class="num">Live Pts</th><th class="num">Draft Slot</th>
+        </tr>
+      </thead>
+      <tbody id="standings-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="sec-roster">
+  <div class="section-head">
+    <h2>Roster Breakdown</h2>
+    <span class="note">Pick a team, judge their choices</span>
+  </div>
+  <div class="roster-controls">
+    <select id="team-picker"></select>
+  </div>
+  <div class="roster-grid">
+    <div>
+      <div class="roster-col-label">Starters</div>
+      <div id="roster-starters"></div>
+    </div>
+    <div>
+      <div class="roster-col-label">Bench</div>
+      <div id="roster-bench"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Powered by the Sleeper API, spite, and mild office rivalry.</span>
+  <span id="footer-sync"></span>
+</footer>
+
+<script id="bootstrap-league" type="application/json">{"name": "Bunge Chopped 2026", "league_id": "1398014426640044032", "season": "2026", "current_week": 1, "total_rosters": 18, "roster_positions": ["QB", "RB", "RB", "WR", "WR", "TE", "FLEX", "FLEX", "BN", "BN", "BN", "BN"], "scoring_type": "PPR", "trade_deadline_week": 11, "playoff_week_start": null, "schedule_paired": false, "last_synced": "2026-09-13T19:37:46.303815+00:00", "matchups_paired": false}</script>
+<script id="bootstrap-teams" type="application/json">{"teams": [{"roster_id": 1, "owner_id": "873321375853654016", "display_name": "vishismonkey", "team_name": null, "avatar": "4f4090e5e9c3941414db40a871e3e909", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 11, "waiver_budget_used": 0, "total_moves": 0, "players": ["12474", "4943", "5870", "7526", "8111", "8138", "8142", "8155", "8167", "8205", "8408", "9502"], "starters": ["4943", "8138", "8155", "7526", "8167", "8111", "8408", "8142"], "draft_position": 8}, {"roster_id": 2, "owner_id": "713856693750026240", "display_name": "Dano193", "team_name": null, "avatar": "da2c8ad5126dac88114a7cb538c2ccdb", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 15, "waiver_budget_used": 0, "total_moves": 0, "players": ["11576", "11610", "11625", "11635", "12487", "12533", "5967", "6804", "7525", "9484", "9493", "9756"], "starters": ["6804", "5967", "12533", "9493", "7525", "9484", "11635", "9756"], "draft_position": 4}, {"roster_id": 3, "owner_id": "873046138062876672", "display_name": "connortaylor14", "team_name": null, "avatar": "b319fdf8b7b5b0359d3c78622ba4d70c", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 13, "waiver_budget_used": 0, "total_moves": 0, "players": ["11620", "12501", "12508", "12517", "12522", "13285", "13293", "13337", "13346", "5045", "6813", "7588"], "starters": ["12508", "6813", "7588", "12501", "5045", "12517", "13346", "11620"], "draft_position": 6}, {"roster_id": 4, "owner_id": "475932413239750656", "display_name": "jonwhite17", "team_name": null, "avatar": "1fe089e517448d9fe207b8607ca8e81b", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 9, "waiver_budget_used": 0, "total_moves": 0, "players": ["11575", "11632", "12489", "12493", "12540", "13296", "6783", "7523", "7543", "7547", "8134", "8228"], "starters": ["7523", "7543", "8228", "7547", "11632", "12493", "12489", "8134"], "draft_position": 10}, {"roster_id": 5, "owner_id": "728480760847278080", "display_name": "BlakeTheHoff", "team_name": null, "avatar": "208bcf5dabe7595d4be091bb8d8b5616", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 14, "waiver_budget_used": 0, "total_moves": 0, "players": ["11563", "12490", "12504", "13311", "4034", "5846", "7002", "8146", "8150", "8210", "9508", "9754"], "starters": ["11563", "4034", "8150", "8146", "5846", "7002", "12490", "9754"], "draft_position": 5}, {"roster_id": 6, "owner_id": "986773184177295360", "display_name": "cmillar13", "team_name": null, "avatar": "b3338675f635c2c1f42b469621d38ec6", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 4, "waiver_budget_used": 0, "total_moves": 0, "players": ["10236", "11618", "12492", "3198", "5927", "6819", "7528", "7569", "7571", "7611", "8180", "8183"], "starters": ["8183", "3198", "7611", "7569", "5927", "10236", "6819", "8180"], "draft_position": 15}, {"roster_id": 7, "owner_id": "1005172605101383680", "display_name": "mwatson14", "team_name": null, "avatar": "e7af4deab0289b4f5505646424895246", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 7, "waiver_budget_used": 0, "total_moves": 0, "players": ["10213", "11637", "11655", "12514", "12527", "2216", "2449", "421", "8121", "9226", "9228", "9480"], "starters": ["421", "9226", "12527", "12514", "2216", "9480", "2449", "8121"], "draft_position": 12}, {"roster_id": 8, "owner_id": "870423285052178432", "display_name": "TCharb", "team_name": null, "avatar": "b3338675f635c2c1f42b469621d38ec6", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 1, "waiver_budget_used": 0, "total_moves": 0, "players": ["11646", "12518", "13286", "1479", "2078", "2505", "4037", "4881", "8131", "8132", "8151", "9504"], "starters": ["4881", "8151", "13286", "4037", "11646", "12518", "8132", "8131"], "draft_position": 18}, {"roster_id": 9, "owner_id": "1264321335790673920", "display_name": "JLeier71", "team_name": null, "avatar": "578c6b253dd7b4bab45382e1af102204", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 2, "waiver_budget_used": 0, "total_moves": 0, "players": ["11586", "12457", "13413", "4217", "5850", "5859", "5872", "6904", "8112", "8126", "8161", "9225"], "starters": ["6904", "9225", "11586", "5859", "8112", "4217", "8126", "5872"], "draft_position": 17}, {"roster_id": 10, "owner_id": "861705444274597888", "display_name": "WalkerJM", "team_name": null, "avatar": "3a7be8c9a6f17a5a6be3dc3df527ff8b", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 3, "waiver_budget_used": 0, "total_moves": 0, "players": ["11581", "11604", "12545", "13417", "2133", "4039", "4199", "4983", "4984", "6806", "7600", "9482"], "starters": ["4984", "6806", "11581", "2133", "4983", "7600", "4199", "13417"], "draft_position": 16}, {"roster_id": 11, "owner_id": "870424617691570176", "display_name": "JackWil96", "team_name": null, "avatar": "8eb8f8bf999945d523f2c4033f70473e", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 8, "waiver_budget_used": 0, "total_moves": 0, "players": ["10219", "12502", "12509", "12512", "12519", "12534", "3294", "5001", "7049", "8130", "9488", "9500"], "starters": ["3294", "12512", "10219", "9488", "12519", "8130", "5001", "9500"], "draft_position": 11}, {"roster_id": 12, "owner_id": "1136122153735028736", "display_name": "FEaston", "team_name": "Feast or Fannin", "avatar": "b319fdf8b7b5b0359d3c78622ba4d70c", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 5, "waiver_budget_used": 0, "total_moves": 0, "players": ["11566", "11583", "12506", "13276", "13414", "5947", "6794", "8136", "9224", "9494", "96", "9997"], "starters": ["11566", "9224", "11583", "6794", "9997", "12506", "5947", "8136"], "draft_position": 14}, {"roster_id": 13, "owner_id": "1401722259185336320", "display_name": "ClarkeH", "team_name": null, "avatar": "51385ba57cd089261f6de9ce483b8716", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 16, "waiver_budget_used": 0, "total_moves": 0, "players": ["11628", "11834", "12526", "13287", "13320", "13345", "3321", "4046", "5849", "7553", "7564", "8110"], "starters": ["4046", "13287", "13345", "7564", "12526", "7553", "11628", "8110"], "draft_position": 3}, {"roster_id": 14, "owner_id": "1401641269020610560", "display_name": "TVT15", "team_name": null, "avatar": "d55d1f7075eda01948318de4af616075", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 12, "waiver_budget_used": 0, "total_moves": 0, "players": ["10229", "11565", "11603", "11624", "12529", "12536", "13305", "4866", "5022", "6790", "6797", "8154"], "starters": ["6797", "4866", "6790", "10229", "11624", "5022", "11603", "8154"], "draft_position": 7}, {"roster_id": 15, "owner_id": "1403103482155634688", "display_name": "FolkG", "team_name": null, "avatar": "d55d1f7075eda01948318de4af616075", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 18, "waiver_budget_used": 0, "total_moves": 0, "players": ["12481", "13269", "13279", "13281", "13294", "5012", "6770", "8676", "9221", "9487", "9753", "9757"], "starters": ["6770", "9221", "12481", "13279", "8676", "5012", "9487", "13294"], "draft_position": 1}, {"roster_id": 16, "owner_id": "1403133450684280832", "display_name": "Rude73", "team_name": null, "avatar": "51385ba57cd089261f6de9ce483b8716", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 17, "waiver_budget_used": 0, "total_moves": 0, "players": ["10222", "11560", "11584", "11631", "11783", "12497", "3214", "4035", "5844", "6801", "9509", "9758"], "starters": ["11560", "9509", "11584", "6801", "11631", "3214", "10222", "5844"], "draft_position": 2}, {"roster_id": 17, "owner_id": "1403157669228863488", "display_name": "tonybologna1266", "team_name": null, "avatar": "51385ba57cd089261f6de9ce483b8716", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 6, "waiver_budget_used": 0, "total_moves": 0, "players": ["10232", "11564", "12469", "12507", "12535", "12547", "13298", "13330", "3163", "7594", "8137", "8148"], "starters": ["11564", "12507", "7594", "8137", "8148", "13330", "10232", "13298"], "draft_position": 13}, {"roster_id": 18, "owner_id": "1403232205882322944", "display_name": "DaveHaines", "team_name": null, "avatar": "51385ba57cd089261f6de9ce483b8716", "wins": 0, "losses": 0, "ties": 0, "fpts": 0.0, "waiver_position": 10, "waiver_budget_used": 0, "total_moves": 0, "players": ["10235", "10859", "12530", "13268", "1466", "4892", "5892", "6786", "7021", "7567", "8144", "9511"], "starters": ["4892", "5892", "7021", "6786", "8144", "10859", "7567", "1466"], "draft_position": 9}]}</script>
+<script id="bootstrap-players" type="application/json">{"11625": {"first_name": "Adonai", "last_name": "Mitchell", "position": "WR", "team": "NYJ", "status": "Active", "injury_status": null}, "7523": {"first_name": "Trevor", "last_name": "Lawrence", "position": "QB", "team": "JAX", "status": "Active", "injury_status": null}, "421": {"first_name": "Matthew", "last_name": "Stafford", "position": "QB", "team": "LAR", "status": "Active", "injury_status": null}, "96": {"first_name": "Aaron", "last_name": "Rodgers", "position": "QB", "team": "PIT", "status": "Active", "injury_status": null}, "12526": {"first_name": "Tetairoa", "last_name": "McMillan", "position": "WR", "team": "CAR", "status": "Active", "injury_status": null}, "13320": {"first_name": "Zachariah", "last_name": "Branch", "position": "WR", "team": "ATL", "status": "Active", "injury_status": null}, "10229": {"first_name": "Rashee", "last_name": "Rice", "position": "WR", "team": "KC", "status": "Active", "injury_status": null}, "5859": {"first_name": "A.J.", "last_name": "Brown", "position": "WR", "team": "NE", "status": "Inactive", "injury_status": "IR"}, "2133": {"first_name": "Davante", "last_name": "Adams", "position": "WR", "team": "LAR", "status": "Active", "injury_status": null}, "5846": {"first_name": "DK", "last_name": "Metcalf", "position": "WR", "team": "PIT", "status": "Active", "injury_status": null}, "12536": {"first_name": "Jaylin", "last_name": "Noel", "position": "WR", "team": "HOU", "status": "Active", "injury_status": null}, "5012": {"first_name": "Mark", "last_name": "Andrews", "position": "TE", "team": "BAL", "status": "Active", "injury_status": null}, "8154": {"first_name": "Brian", "last_name": "Robinson", "position": "RB", "team": "ATL", "status": "Active", "injury_status": null}, "13269": {"first_name": "Fernando", "last_name": "Mendoza", "position": "QB", "team": "LV", "status": "Active", "injury_status": null}, "8155": {"first_name": "Breece", "last_name": "Hall", "position": "RB", "team": "NYJ", "status": "Active", "injury_status": null}, "9493": {"first_name": "Puka", "last_name": "Nacua", "position": "WR", "team": "LAR", "status": "Active", "injury_status": null}, "13281": {"first_name": "Jordyn", "last_name": "Tyson", "position": "WR", "team": "NO", "status": "Inactive", "injury_status": "IR"}, "5947": {"first_name": "Jakobi", "last_name": "Meyers", "position": "WR", "team": "JAX", "status": "Active", "injury_status": null}, "6797": {"first_name": "Justin", "last_name": "Herbert", "position": "QB", "team": "LAC", "status": "Active", "injury_status": null}, "10219": {"first_name": "Chris", "last_name": "Rodriguez", "position": "RB", "team": "JAX", "status": "Active", "injury_status": null}, "10859": {"first_name": "Sam", "last_name": "LaPorta", "position": "TE", "team": "DET", "status": "Active", "injury_status": null}, "8161": {"first_name": "Malik", "last_name": "Willis", "position": "QB", "team": "MIA", "status": "Active", "injury_status": null}, "7021": {"first_name": "Rico", "last_name": "Dowdle", "position": "RB", "team": "PIT", "status": "Active", "injury_status": null}, "7571": {"first_name": "Rashod", "last_name": "Bateman", "position": "WR", "team": "BAL", "status": "Active", "injury_status": null}, "11618": {"first_name": "Jalen", "last_name": "McMillan", "position": "WR", "team": "TB", "status": "Active", "injury_status": "Doubtful"}, "12518": {"first_name": "Tyler", "last_name": "Warren", "position": "TE", "team": "IND", "status": "Active", "injury_status": null}, "12501": {"first_name": "Matthew", "last_name": "Golden", "position": "WR", "team": "GB", "status": "Active", "injury_status": null}, "7526": {"first_name": "Jaylen", "last_name": "Waddle", "position": "WR", "team": "DEN", "status": "Active", "injury_status": null}, "13276": {"first_name": "Omar", "last_name": "Cooper", "position": "WR", "team": "NYJ", "status": "Active", "injury_status": null}, "11575": {"first_name": "Ray", "last_name": "Davis", "position": "RB", "team": "BUF", "status": "Active", "injury_status": null}, "12506": {"first_name": "Harold", "last_name": "Fannin", "position": "TE", "team": "CLE", "status": "Active", "injury_status": null}, "5849": {"first_name": "Kyler", "last_name": "Murray", "position": "QB", "team": "MIN", "status": "Active", "injury_status": null}, "4866": {"first_name": "Saquon", "last_name": "Barkley", "position": "RB", "team": "PHI", "status": "Active", "injury_status": null}, "5045": {"first_name": "Courtland", "last_name": "Sutton", "position": "WR", "team": "DEN", "status": "Active", "injury_status": null}, "12487": {"first_name": "Terrance", "last_name": "Ferguson", "position": "TE", "team": "LAR", "status": "Active", "injury_status": null}, "11628": {"first_name": "Marvin", "last_name": "Harrison", "position": "WR", "team": "ARI", "status": "Active", "injury_status": null}, "13293": {"first_name": "Ja'Kobi", "last_name": "Lane", "position": "WR", "team": "BAL", "status": "Active", "injury_status": null}, "13287": {"first_name": "Jeremiyah", "last_name": "Love", "position": "RB", "team": "ARI", "status": "Active", "injury_status": "Questionable"}, "4892": {"first_name": "Baker", "last_name": "Mayfield", "position": "QB", "team": "TB", "status": "Active", "injury_status": null}, "11635": {"first_name": "Ladd", "last_name": "McConkey", "position": "WR", "team": "LAC", "status": "Active", "injury_status": null}, "9997": {"first_name": "Zay", "last_name": "Flowers", "position": "WR", "team": "BAL", "status": "Active", "injury_status": null}, "9504": {"first_name": "Kayshon", "last_name": "Boutte", "position": "WR", "team": "HOU", "status": "Active", "injury_status": null}, "12514": {"first_name": "Emeka", "last_name": "Egbuka", "position": "WR", "team": "TB", "status": "Active", "injury_status": null}, "12481": {"first_name": "Cam", "last_name": "Skattebo", "position": "RB", "team": "NYG", "status": "Active", "injury_status": null}, "6786": {"first_name": "CeeDee", "last_name": "Lamb", "position": "WR", "team": "DAL", "status": "Active", "injury_status": null}, "1479": {"first_name": "Keenan", "last_name": "Allen", "position": "WR", "team": "IND", "status": "Active", "injury_status": null}, "3321": {"first_name": "Tyreek", "last_name": "Hill", "position": "WR", "team": null, "status": "Active", "injury_status": ""}, "4881": {"first_name": "Lamar", "last_name": "Jackson", "position": "QB", "team": "BAL", "status": "Active", "injury_status": null}, "8228": {"first_name": "Jaylen", "last_name": "Warren", "position": "RB", "team": "PIT", "status": "Active", "injury_status": null}, "11586": {"first_name": "Blake", "last_name": "Corum", "position": "RB", "team": "LAR", "status": "Active", "injury_status": null}, "12512": {"first_name": "Quinshon", "last_name": "Judkins", "position": "RB", "team": "CLE", "status": "Active", "injury_status": null}, "13268": {"first_name": "Elijah", "last_name": "Sarratt", "position": "WR", "team": "BAL", "status": "Active", "injury_status": null}, "2216": {"first_name": "Mike", "last_name": "Evans", "position": "WR", "team": "SF", "status": "Active", "injury_status": null}, "8130": {"first_name": "Trey", "last_name": "McBride", "position": "TE", "team": "ARI", "status": "Active", "injury_status": null}, "10213": {"first_name": "Tre", "last_name": "Tucker", "position": "WR", "team": "LV", "status": "Active", "injury_status": null}, "13294": {"first_name": "Makai", "last_name": "Lemon", "position": "WR", "team": "PHI", "status": "Active", "injury_status": null}, "9484": {"first_name": "Tucker", "last_name": "Kraft", "position": "TE", "team": "GB", "status": "Active", "injury_status": null}, "8150": {"first_name": "Kyren", "last_name": "Williams", "position": "RB", "team": "LAR", "status": "Active", "injury_status": null}, "13286": {"first_name": "Jadarian", "last_name": "Price", "position": "RB", "team": "SEA", "status": "Active", "injury_status": null}, "2505": {"first_name": "Darren", "last_name": "Waller", "position": "TE", "team": "CAR", "status": "Active", "injury_status": null}, "7600": {"first_name": "Pat", "last_name": "Freiermuth", "position": "TE", "team": "PIT", "status": "Active", "injury_status": null}, "12535": {"first_name": "Isaac", "last_name": "TeSlaa", "position": "WR", "team": "DET", "status": "Active", "injury_status": null}, "11560": {"first_name": "Caleb", "last_name": "Williams", "position": "QB", "team": "CHI", "status": "Active", "injury_status": null}, "12545": {"first_name": "Tyler", "last_name": "Shough", "position": "QB", "team": "NO", "status": "Active", "injury_status": null}, "2449": {"first_name": "Stefon", "last_name": "Diggs", "position": "WR", "team": "WAS", "status": "Active", "injury_status": null}, "5001": {"first_name": "Dalton", "last_name": "Schultz", "position": "TE", "team": "HOU", "status": "Active", "injury_status": null}, "12492": {"first_name": "Pat", "last_name": "Bryant", "position": "WR", "team": "DEN", "status": "Active", "injury_status": null}, "8183": {"first_name": "Brock", "last_name": "Purdy", "position": "QB", "team": "SF", "status": "Active", "injury_status": null}, "7611": {"first_name": "Rhamondre", "last_name": "Stevenson", "position": "RB", "team": "NE", "status": "Active", "injury_status": null}, "2078": {"first_name": "Odell", "last_name": "Beckham", "position": "WR", "team": "NYG", "status": "Active", "injury_status": null}, "12519": {"first_name": "Luther", "last_name": "Burden", "position": "WR", "team": "CHI", "status": "Active", "injury_status": null}, "8136": {"first_name": "Rachaad", "last_name": "White", "position": "RB", "team": "WAS", "status": "Active", "injury_status": null}, "5870": {"first_name": "Daniel", "last_name": "Jones", "position": "QB", "team": "IND", "status": "Active", "injury_status": null}, "3214": {"first_name": "Hunter", "last_name": "Henry", "position": "TE", "team": "NE", "status": "Active", "injury_status": null}, "5967": {"first_name": "Tony", "last_name": "Pollard", "position": "RB", "team": "TEN", "status": "Active", "injury_status": null}, "9224": {"first_name": "Chase", "last_name": "Brown", "position": "RB", "team": "CIN", "status": "Active", "injury_status": null}, "5872": {"first_name": "Deebo", "last_name": "Samuel", "position": "WR", "team": "SF", "status": "Active", "injury_status": null}, "12504": {"first_name": "Kaleb", "last_name": "Johnson", "position": "RB", "team": "GB", "status": "Active", "injury_status": null}, "12490": {"first_name": "Bhayshul", "last_name": "Tuten", "position": "RB", "team": "JAX", "status": "Active", "injury_status": null}, "9494": {"first_name": "Marvin", "last_name": "Mims", "position": "WR", "team": "DEN", "status": "Active", "injury_status": null}, "7564": {"first_name": "Ja'Marr", "last_name": "Chase", "position": "WR", "team": "CIN", "status": "Active", "injury_status": null}, "9753": {"first_name": "Zach", "last_name": "Charbonnet", "position": "RB", "team": "SEA", "status": "Active", "injury_status": "PUP"}, "9758": {"first_name": "C.J.", "last_name": "Stroud", "position": "QB", "team": "HOU", "status": "Active", "injury_status": null}, "7594": {"first_name": "Chuba", "last_name": "Hubbard", "position": "RB", "team": "CAR", "status": "Active", "injury_status": null}, "5844": {"first_name": "T.J.", "last_name": "Hockenson", "position": "TE", "team": "MIN", "status": "Active", "injury_status": null}, "11646": {"first_name": "Jalen", "last_name": "Coker", "position": "WR", "team": "CAR", "status": "Active", "injury_status": null}, "6801": {"first_name": "Tee", "last_name": "Higgins", "position": "WR", "team": "CIN", "status": "Active", "injury_status": null}, "8210": {"first_name": "Chig", "last_name": "Okonkwo", "position": "TE", "team": "WAS", "status": "Active", "injury_status": null}, "7569": {"first_name": "Nico", "last_name": "Collins", "position": "WR", "team": "HOU", "status": "Active", "injury_status": null}, "6770": {"first_name": "Joe", "last_name": "Burrow", "position": "QB", "team": "CIN", "status": "Active", "injury_status": null}, "13279": {"first_name": "Carnell", "last_name": "Tate", "position": "WR", "team": "TEN", "status": "Active", "injury_status": null}, "4037": {"first_name": "Chris", "last_name": "Godwin", "position": "WR", "team": "TB", "status": "Active", "injury_status": null}, "13298": {"first_name": "KC", "last_name": "Concepcion", "position": "WR", "team": "CLE", "status": "Active", "injury_status": null}, "4983": {"first_name": "DJ", "last_name": "Moore", "position": "WR", "team": "BUF", "status": "Active", "injury_status": null}, "12509": {"first_name": "Tre'", "last_name": "Harris", "position": "WR", "team": "LAC", "status": "Active", "injury_status": null}, "3198": {"first_name": "Derrick", "last_name": "Henry", "position": "RB", "team": "BAL", "status": "Active", "injury_status": null}, "6794": {"first_name": "Justin", "last_name": "Jefferson", "position": "WR", "team": "MIN", "status": "Active", "injury_status": null}, "7567": {"first_name": "Kenny", "last_name": "Gainwell", "position": "RB", "team": "TB", "status": "Active", "injury_status": null}, "8180": {"first_name": "Jalen", "last_name": "Nailor", "position": "WR", "team": "LV", "status": "Active", "injury_status": null}, "11576": {"first_name": "Braelon", "last_name": "Allen", "position": "RB", "team": "NYJ", "status": "Active", "injury_status": null}, "11581": {"first_name": "MarShawn", "last_name": "Lloyd", "position": "RB", "team": "GB", "status": "Active", "injury_status": null}, "6804": {"first_name": "Jordan", "last_name": "Love", "position": "QB", "team": "GB", "status": "Active", "injury_status": null}, "12502": {"first_name": "Gunnar", "last_name": "Helm", "position": "TE", "team": "TEN", "status": "Active", "injury_status": null}, "9221": {"first_name": "Jahmyr", "last_name": "Gibbs", "position": "RB", "team": "DET", "status": "Active", "injury_status": null}, "6790": {"first_name": "D'Andre", "last_name": "Swift", "position": "RB", "team": "CHI", "status": "Active", "injury_status": null}, "11565": {"first_name": "J.J.", "last_name": "McCarthy", "position": "QB", "team": "MIN", "status": "Active", "injury_status": null}, "6813": {"first_name": "Jonathan", "last_name": "Taylor", "position": "RB", "team": "IND", "status": "Active", "injury_status": null}, "13330": {"first_name": "Kenyon", "last_name": "Sadiq", "position": "TE", "team": "NYJ", "status": "Active", "injury_status": null}, "10235": {"first_name": "Roschon", "last_name": "Johnson", "position": "RB", "team": "CHI", "status": "Active", "injury_status": null}, "11655": {"first_name": "Tyrone", "last_name": "Tracy", "position": "RB", "team": "NYG", "status": "Active", "injury_status": null}, "7547": {"first_name": "Amon-Ra", "last_name": "St. Brown", "position": "WR", "team": "DET", "status": "Active", "injury_status": null}, "8142": {"first_name": "Alec", "last_name": "Pierce", "position": "WR", "team": "IND", "status": "Active", "injury_status": null}, "6819": {"first_name": "Michael", "last_name": "Pittman", "position": "WR", "team": "PIT", "status": "Active", "injury_status": null}, "9502": {"first_name": "Tank", "last_name": "Dell", "position": "WR", "team": "HOU", "status": "Inactive", "injury_status": "IR"}, "8676": {"first_name": "Rashid", "last_name": "Shaheed", "position": "WR", "team": "SEA", "status": "Active", "injury_status": null}, "12547": {"first_name": "Kyle", "last_name": "Williams", "position": "WR", "team": "NE", "status": "Active", "injury_status": null}, "11834": {"first_name": "Devaughn", "last_name": "Vele", "position": "WR", "team": "NO", "status": "Active", "injury_status": null}, "3163": {"first_name": "Jared", "last_name": "Goff", "position": "QB", "team": "DET", "status": "Active", "injury_status": null}, "13305": {"first_name": "Mike", "last_name": "Washington", "position": "RB", "team": "LV", "status": "Active", "injury_status": null}, "13337": {"first_name": "Emmett", "last_name": "Johnson", "position": "RB", "team": "KC", "status": "Active", "injury_status": null}, "8138": {"first_name": "James", "last_name": "Cook", "position": "RB", "team": "BUF", "status": "Active", "injury_status": null}, "12469": {"first_name": "Dylan", "last_name": "Sampson", "position": "RB", "team": "CLE", "status": "Active", "injury_status": null}, "11604": {"first_name": "Brock", "last_name": "Bowers", "position": "TE", "team": "LV", "status": "Active", "injury_status": "Out"}, "8126": {"first_name": "Wan'Dale", "last_name": "Robinson", "position": "WR", "team": "TEN", "status": "Active", "injury_status": null}, "9500": {"first_name": "Josh", "last_name": "Downs", "position": "WR", "team": "IND", "status": "Active", "injury_status": null}, "13413": {"first_name": "Cyrus", "last_name": "Allen", "position": "WR", "team": "KC", "status": "Active", "injury_status": null}, "13417": {"first_name": "De'Zhaun", "last_name": "Stribling", "position": "WR", "team": "SF", "status": "Active", "injury_status": "Out"}, "11566": {"first_name": "Jayden", "last_name": "Daniels", "position": "QB", "team": "WAS", "status": "Active", "injury_status": null}, "12533": {"first_name": "Jacory", "last_name": "Croskey-Merritt", "position": "RB", "team": "WAS", "status": "Active", "injury_status": null}, "9228": {"first_name": "Bryce", "last_name": "Young", "position": "QB", "team": "CAR", "status": "Active", "injury_status": null}, "7553": {"first_name": "Kyle", "last_name": "Pitts", "position": "TE", "team": "ATL", "status": "Active", "injury_status": null}, "12457": {"first_name": "Jaydon", "last_name": "Blue", "position": "RB", "team": "PHI", "status": "Active", "injury_status": null}, "1466": {"first_name": "Travis", "last_name": "Kelce", "position": "TE", "team": "KC", "status": "Active", "injury_status": null}, "8134": {"first_name": "Khalil", "last_name": "Shakir", "position": "WR", "team": "BUF", "status": "Active", "injury_status": null}, "8137": {"first_name": "George", "last_name": "Pickens", "position": "WR", "team": "DAL", "status": "Active", "injury_status": null}, "8110": {"first_name": "Jake", "last_name": "Ferguson", "position": "TE", "team": "DAL", "status": "Active", "injury_status": null}, "11631": {"first_name": "Brian", "last_name": "Thomas", "position": "WR", "team": "JAX", "status": "Active", "injury_status": null}, "8112": {"first_name": "Drake", "last_name": "London", "position": "WR", "team": "ATL", "status": "Active", "injury_status": null}, "11783": {"first_name": "Ryan", "last_name": "Flournoy", "position": "WR", "team": "DAL", "status": "Active", "injury_status": null}, "9509": {"first_name": "Bijan", "last_name": "Robinson", "position": "RB", "team": "ATL", "status": "Active", "injury_status": null}, "8146": {"first_name": "Garrett", "last_name": "Wilson", "position": "WR", "team": "NYJ", "status": "Active", "injury_status": null}, "7543": {"first_name": "Travis", "last_name": "Etienne", "position": "RB", "team": "NO", "status": "Active", "injury_status": null}, "11563": {"first_name": "Bo", "last_name": "Nix", "position": "QB", "team": "DEN", "status": "Active", "injury_status": null}, "8205": {"first_name": "Isiah", "last_name": "Pacheco", "position": "RB", "team": "DET", "status": "Inactive", "injury_status": "IR"}, "12508": {"first_name": "Jaxson", "last_name": "Dart", "position": "QB", "team": "NYG", "status": "Active", "injury_status": null}, "10232": {"first_name": "Michael", "last_name": "Wilson", "position": "WR", "team": "ARI", "status": "Active", "injury_status": null}, "12530": {"first_name": "Travis", "last_name": "Hunter", "position": "DB", "team": "JAX", "status": "Active", "injury_status": null}, "7588": {"first_name": "Javonte", "last_name": "Williams", "position": "RB", "team": "DAL", "status": "Active", "injury_status": null}, "8144": {"first_name": "Chris", "last_name": "Olave", "position": "WR", "team": "NO", "status": "Active", "injury_status": null}, "8167": {"first_name": "Christian", "last_name": "Watson", "position": "WR", "team": "GB", "status": "Active", "injury_status": null}, "12489": {"first_name": "RJ", "last_name": "Harvey", "position": "RB", "team": "DEN", "status": "Active", "injury_status": null}, "3294": {"first_name": "Dak", "last_name": "Prescott", "position": "QB", "team": "DAL", "status": "Active", "injury_status": null}, "6806": {"first_name": "J.K.", "last_name": "Dobbins", "position": "RB", "team": "DEN", "status": "Active", "injury_status": null}, "4984": {"first_name": "Josh", "last_name": "Allen", "position": "QB", "team": "BUF", "status": "Active", "injury_status": null}, "10236": {"first_name": "Dalton", "last_name": "Kincaid", "position": "TE", "team": "BUF", "status": "Active", "injury_status": null}, "13414": {"first_name": "Kaelon", "last_name": "Black", "position": "RB", "team": "SF", "status": "Active", "injury_status": null}, "9757": {"first_name": "Kendre", "last_name": "Miller", "position": "RB", "team": "NO", "status": "Active", "injury_status": null}, "4035": {"first_name": "Alvin", "last_name": "Kamara", "position": "RB", "team": "NO", "status": "Active", "injury_status": "Questionable"}, "13345": {"first_name": "Jonah", "last_name": "Coleman", "position": "RB", "team": "DEN", "status": "Active", "injury_status": null}, "5022": {"first_name": "Dallas", "last_name": "Goedert", "position": "TE", "team": "PHI", "status": "Active", "injury_status": null}, "9754": {"first_name": "Quentin", "last_name": "Johnston", "position": "WR", "team": "LAC", "status": "Active", "injury_status": null}, "11620": {"first_name": "Rome", "last_name": "Odunze", "position": "WR", "team": "CHI", "status": "Active", "injury_status": "Questionable"}, "9487": {"first_name": "Parker", "last_name": "Washington", "position": "WR", "team": "JAX", "status": "Active", "injury_status": null}, "12529": {"first_name": "TreVeyon", "last_name": "Henderson", "position": "RB", "team": "NE", "status": "Active", "injury_status": "Out"}, "7525": {"first_name": "DeVonta", "last_name": "Smith", "position": "WR", "team": "PHI", "status": "Active", "injury_status": null}, "4034": {"first_name": "Christian", "last_name": "McCaffrey", "position": "RB", "team": "SF", "status": "Active", "injury_status": null}, "4217": {"first_name": "George", "last_name": "Kittle", "position": "TE", "team": "SF", "status": "Active", "injury_status": null}, "9511": {"first_name": "Keaton", "last_name": "Mitchell", "position": "RB", "team": "LAC", "status": "Active", "injury_status": null}, "13346": {"first_name": "Denzel", "last_name": "Boston", "position": "WR", "team": "CLE", "status": "Active", "injury_status": null}, "4039": {"first_name": "Cooper", "last_name": "Kupp", "position": "WR", "team": "SEA", "status": "Active", "injury_status": null}, "8132": {"first_name": "Tyler", "last_name": "Allgeier", "position": "RB", "team": "ARI", "status": "Active", "injury_status": null}, "8151": {"first_name": "Kenneth", "last_name": "Walker", "position": "RB", "team": "KC", "status": "Active", "injury_status": null}, "8131": {"first_name": "Isaiah", "last_name": "Likely", "position": "TE", "team": "NYG", "status": "Active", "injury_status": null}, "9756": {"first_name": "Jordan", "last_name": "Addison", "position": "WR", "team": "MIN", "status": "Active", "injury_status": null}, "6904": {"first_name": "Jalen", "last_name": "Hurts", "position": "QB", "team": "PHI", "status": "Active", "injury_status": null}, "11564": {"first_name": "Drake", "last_name": "Maye", "position": "QB", "team": "NE", "status": "Active", "injury_status": null}, "11610": {"first_name": "Malik", "last_name": "Washington", "position": "WR", "team": "MIA", "status": "Active", "injury_status": null}, "11584": {"first_name": "Bucky", "last_name": "Irving", "position": "RB", "team": "TB", "status": "Active", "injury_status": null}, "12527": {"first_name": "Ashton", "last_name": "Jeanty", "position": "RB", "team": "LV", "status": "Active", "injury_status": null}, "4199": {"first_name": "Aaron", "last_name": "Jones", "position": "RB", "team": "MIN", "status": "Active", "injury_status": null}, "4943": {"first_name": "Sam", "last_name": "Darnold", "position": "QB", "team": "SEA", "status": "Active", "injury_status": "Out"}, "11637": {"first_name": "Keon", "last_name": "Coleman", "position": "WR", "team": "BUF", "status": "Active", "injury_status": null}, "7528": {"first_name": "Najee", "last_name": "Harris", "position": "RB", "team": "NYG", "status": "Active", "injury_status": null}, "13311": {"first_name": "Chris", "last_name": "Bell", "position": "WR", "team": "MIA", "status": "Active", "injury_status": null}, "12497": {"first_name": "Tory", "last_name": "Horton", "position": "WR", "team": "SEA", "status": "Active", "injury_status": "Out"}, "12517": {"first_name": "Colston", "last_name": "Loveland", "position": "TE", "team": "CHI", "status": "Active", "injury_status": null}, "5850": {"first_name": "Josh", "last_name": "Jacobs", "position": "RB", "team": "GB", "status": "Active", "injury_status": "NA"}, "9508": {"first_name": "Tyjae", "last_name": "Spears", "position": "RB", "team": "TEN", "status": "Active", "injury_status": null}, "4046": {"first_name": "Patrick", "last_name": "Mahomes", "position": "QB", "team": "KC", "status": "Active", "injury_status": null}, "8148": {"first_name": "Jameson", "last_name": "Williams", "position": "WR", "team": "DET", "status": "Active", "injury_status": null}, "9480": {"first_name": "Brenton", "last_name": "Strange", "position": "TE", "team": "JAX", "status": "Active", "injury_status": null}, "12507": {"first_name": "Omarion", "last_name": "Hampton", "position": "RB", "team": "LAC", "status": "Active", "injury_status": null}, "12522": {"first_name": "Cam", "last_name": "Ward", "position": "QB", "team": "TEN", "status": "Active", "injury_status": null}, "5927": {"first_name": "Terry", "last_name": "McLaurin", "position": "WR", "team": "WAS", "status": "Active", "injury_status": null}, "10222": {"first_name": "Jayden", "last_name": "Reed", "position": "WR", "team": "GB", "status": "Active", "injury_status": null}, "9226": {"first_name": "De'Von", "last_name": "Achane", "position": "RB", "team": "MIA", "status": "Active", "injury_status": null}, "12540": {"first_name": "Chimere", "last_name": "Dike", "position": "WR", "team": "TEN", "status": "Active", "injury_status": null}, "7002": {"first_name": "Juwan", "last_name": "Johnson", "position": "TE", "team": "NO", "status": "Active", "injury_status": null}, "9488": {"first_name": "Jaxon", "last_name": "Smith-Njigba", "position": "WR", "team": "SEA", "status": "Active", "injury_status": null}, "9482": {"first_name": "Michael", "last_name": "Mayer", "position": "TE", "team": "LV", "status": "Active", "injury_status": null}, "11583": {"first_name": "Jonathon", "last_name": "Brooks", "position": "RB", "team": "CAR", "status": "Active", "injury_status": null}, "13296": {"first_name": "Caleb", "last_name": "Douglas", "position": "WR", "team": "MIA", "status": "Active", "injury_status": null}, "5892": {"first_name": "David", "last_name": "Montgomery", "position": "RB", "team": "HOU", "status": "Active", "injury_status": null}, "7049": {"first_name": "Jauan", "last_name": "Jennings", "position": "WR", "team": "MIN", "status": "Active", "injury_status": null}, "12534": {"first_name": "Kyle", "last_name": "Monangai", "position": "RB", "team": "CHI", "status": "Active", "injury_status": null}, "6783": {"first_name": "Jerry", "last_name": "Jeudy", "position": "WR", "team": "CLE", "status": "Active", "injury_status": null}, "8121": {"first_name": "Romeo", "last_name": "Doubs", "position": "WR", "team": "NE", "status": "Active", "injury_status": null}, "9225": {"first_name": "Tank", "last_name": "Bigsby", "position": "RB", "team": "PHI", "status": "Active", "injury_status": null}, "13285": {"first_name": "Malachi", "last_name": "Fields", "position": "WR", "team": "NYG", "status": "Active", "injury_status": null}, "11603": {"first_name": "AJ", "last_name": "Barner", "position": "TE", "team": "SEA", "status": "Active", "injury_status": null}, "11624": {"first_name": "Xavier", "last_name": "Worthy", "position": "WR", "team": "KC", "status": "Active", "injury_status": null}, "8111": {"first_name": "Cade", "last_name": "Otton", "position": "TE", "team": "TB", "status": "Active", "injury_status": null}, "12474": {"first_name": "Woody", "last_name": "Marks", "position": "RB", "team": "HOU", "status": "Active", "injury_status": null}, "11632": {"first_name": "Malik", "last_name": "Nabers", "position": "WR", "team": "NYG", "status": "Active", "injury_status": "Questionable"}, "8408": {"first_name": "Jordan", "last_name": "Mason", "position": "RB", "team": "MIN", "status": "Active", "injury_status": null}, "12493": {"first_name": "Oronde", "last_name": "Gadsden", "position": "TE", "team": "LAC", "status": "Active", "injury_status": null}}</script>
+<script id="bootstrap-matchups" type="application/json">{"week": 1, "matchups": [{"points": 32.22, "players": ["12474", "4943", "5870", "7526", "8111", "8138", "8142", "8155", "8167", "8205", "8408", "9502"], "roster_id": 1, "custom_points": null, "matchup_id": 1, "starters": ["4943", "8138", "8155", "7526", "8167", "8111", "8408", "8142"], "starters_points": [0.52, 5.6, 17.4, 0.0, 0.0, 4.3, 0.0, 4.4], "players_points": {"12474": 3.6, "4943": 0.52, "5870": 3.36, "7526": 0.0, "8111": 4.3, "8138": 5.6, "8142": 4.4, "8155": 17.4, "8167": 0.0, "8205": 0.0, "8408": 0.0, "9502": 0.0}}, {"points": 16.8, "players": ["11576", "11610", "11625", "11635", "12487", "12533", "5967", "6804", "7525", "9484", "9493", "9756"], "roster_id": 2, "custom_points": null, "matchup_id": 2, "starters": ["6804", "5967", "12533", "9493", "7525", "9484", "11635", "9756"], "starters_points": [0.0, 4.4, 0.0, 12.4, 0.0, 0.0, 0.0, 0.0], "players_points": {"11576": 3.4, "11610": 0.0, "11625": 9.0, "11635": 0.0, "12487": 0.0, "12533": 0.0, "5967": 4.4, "6804": 0.0, "7525": 0.0, "9484": 0.0, "9493": 12.4, "9756": 0.0}}, {"points": 32.8, "players": ["11620", "12501", "12508", "12517", "12522", "13285", "13293", "13337", "13346", "5045", "6813", "7588"], "roster_id": 3, "custom_points": null, "matchup_id": 3, "starters": ["12508", "6813", "7588", "12501", "5045", "12517", "13346", "11620"], "starters_points": [0.0, 23.3, 0.0, 0.0, 0.0, 0.0, 2.3, 7.2], "players_points": {"11620": 7.2, "12501": 0.0, "12508": 0.0, "12517": 0.0, "12522": 4.56, "13285": 0.0, "13293": 2.1, "13337": 0.0, "13346": 2.3, "5045": 0.0, "6813": 23.3, "7588": 0.0}}, {"points": 66.4, "players": ["11575", "11632", "12489", "12493", "12540", "13296", "6783", "7523", "7543", "7547", "8134", "8228"], "roster_id": 4, "custom_points": null, "matchup_id": 4, "starters": ["7523", "7543", "8228", "7547", "11632", "12493", "12489", "8134"], "starters_points": [26.1, 9.2, 5.5, 16.6, 0.0, 0.0, 0.0, 9.0], "players_points": {"11575": 0.3, "11632": 0.0, "12489": 0.0, "12493": 0.0, "12540": -0.3, "13296": 0.0, "6783": 4.6, "7523": 26.1, "7543": 9.2, "7547": 16.6, "8134": 9.0, "8228": 5.5}}, {"points": 58.6, "players": ["11563", "12490", "12504", "13311", "4034", "5846", "7002", "8146", "8150", "8210", "9508", "9754"], "roster_id": 5, "custom_points": null, "matchup_id": 5, "starters": ["11563", "4034", "8150", "8146", "5846", "7002", "12490", "9754"], "starters_points": [0.0, 13.8, 15.5, 13.9, 5.6, 0.0, 9.8, 0.0], "players_points": {"11563": 0.0, "12490": 9.8, "12504": 0.0, "13311": 0.0, "4034": 13.8, "5846": 5.6, "7002": 0.0, "8146": 13.9, "8150": 15.5, "8210": 0.0, "9508": 0.2, "9754": 0.0}}, {"points": 97.9, "players": ["10236", "11618", "12492", "3198", "5927", "6819", "7528", "7569", "7571", "7611", "8180", "8183"], "roster_id": 6, "custom_points": null, "matchup_id": 6, "starters": ["8183", "3198", "7611", "7569", "5927", "10236", "6819", "8180"], "starters_points": [22.1, 24.7, 14.5, 16.2, 0.0, 13.5, 6.9, 0.0], "players_points": {"10236": 13.5, "11618": 0.0, "12492": 0.0, "3198": 24.7, "5927": 0.0, "6819": 6.9, "7528": 0.0, "7569": 16.2, "7571": 0.0, "7611": 14.5, "8180": 0.0, "8183": 22.1}}, {"points": 43.6, "players": ["10213", "11637", "11655", "12514", "12527", "2216", "2449", "421", "8121", "9226", "9228", "9480"], "roster_id": 7, "custom_points": null, "matchup_id": 7, "starters": ["421", "9226", "12527", "12514", "2216", "9480", "2449", "8121"], "starters_points": [5.1, 0.0, 0.0, 11.3, 16.9, 10.3, 0.0, 0.0], "players_points": {"10213": 0.0, "11637": 1.1, "11655": 0.0, "12514": 11.3, "12527": 0.0, "2216": 16.9, "2449": 0.0, "421": 5.1, "8121": 0.0, "9226": 0.0, "9228": 22.9, "9480": 10.3}}, {"points": 62.5, "players": ["11646", "12518", "13286", "1479", "2078", "2505", "4037", "4881", "8131", "8132", "8151", "9504"], "roster_id": 8, "custom_points": null, "matchup_id": 8, "starters": ["4881", "8151", "13286", "4037", "11646", "12518", "8132", "8131"], "starters_points": [24.3, 0.0, 7.8, 8.3, 19.7, 2.4, 0.0, 0.0], "players_points": {"11646": 19.7, "12518": 2.4, "13286": 7.8, "1479": 4.9, "2078": 0.0, "2505": 4.8, "4037": 8.3, "4881": 24.3, "8131": 0.0, "8132": 0.0, "8151": 0.0, "9504": 3.1}}, {"points": 42.5, "players": ["11586", "12457", "13413", "4217", "5850", "5859", "5872", "6904", "8112", "8126", "8161", "9225"], "roster_id": 9, "custom_points": null, "matchup_id": 9, "starters": ["6904", "9225", "11586", "5859", "8112", "4217", "8126", "5872"], "starters_points": [0.0, 0.0, 5.4, 5.6, 4.9, 3.2, 5.4, 18.0], "players_points": {"11586": 5.4, "12457": 0.0, "13413": 0.0, "4217": 3.2, "5850": 0.0, "5859": 5.6, "5872": 18.0, "6904": 0.0, "8112": 4.9, "8126": 5.4, "8161": 0.0, "9225": 0.0}}, {"points": 70.56, "players": ["11581", "11604", "12545", "13417", "2133", "4039", "4199", "4983", "4984", "6806", "7600", "9482"], "roster_id": 10, "custom_points": null, "matchup_id": 10, "starters": ["4984", "6806", "11581", "2133", "4983", "7600", "4199", "13417"], "starters_points": [28.36, 0.0, 0.0, 5.6, 21.0, 15.6, 0.0, 0.0], "players_points": {"11581": 0.0, "11604": 0.0, "12545": 7.86, "13417": 0.0, "2133": 5.6, "4039": 5.5, "4199": 0.0, "4983": 21.0, "4984": 28.36, "6806": 0.0, "7600": 15.6, "9482": 0.0}}, {"points": 47.0, "players": ["10219", "12502", "12509", "12512", "12519", "12534", "3294", "5001", "7049", "8130", "9488", "9500"], "roster_id": 11, "custom_points": null, "matchup_id": 11, "starters": ["3294", "12512", "10219", "9488", "12519", "8130", "5001", "9500"], "starters_points": [0.0, 3.6, 2.3, 26.2, 7.3, 0.0, 1.9, 5.7], "players_points": {"10219": 2.3, "12502": 3.3, "12509": 0.0, "12512": 3.6, "12519": 7.3, "12534": 4.8, "3294": 0.0, "5001": 1.9, "7049": 0.0, "8130": 0.0, "9488": 26.2, "9500": 5.7}}, {"points": 64.7, "players": ["11566", "11583", "12506", "13276", "13414", "5947", "6794", "8136", "9224", "9494", "96", "9997"], "roster_id": 12, "custom_points": null, "matchup_id": 12, "starters": ["11566", "9224", "11583", "6794", "9997", "12506", "5947", "8136"], "starters_points": [0.0, 15.8, 6.6, 0.0, 26.0, 4.1, 12.2, 0.0], "players_points": {"11566": 0.0, "11583": 6.6, "12506": 4.1, "13276": 4.0, "13414": 8.0, "5947": 12.2, "6794": 0.0, "8136": 0.0, "9224": 15.8, "9494": 0.0, "96": 11.12, "9997": 26.0}}, {"points": 5.6, "players": ["11628", "11834", "12526", "13287", "13320", "13345", "3321", "4046", "5849", "7553", "7564", "8110"], "roster_id": 13, "custom_points": null, "matchup_id": 13, "starters": ["4046", "13287", "13345", "7564", "12526", "7553", "11628", "8110"], "starters_points": [0.0, 0.0, 0.0, 3.2, 2.4, 0.0, 0.0, 0.0], "players_points": {"11628": 0.0, "11834": 12.0, "12526": 2.4, "13287": 0.0, "13320": 0.0, "13345": 0.0, "3321": 0.0, "4046": 0.0, "5849": 0.0, "7553": 0.0, "7564": 3.2, "8110": 0.0}}, {"points": 21.1, "players": ["10229", "11565", "11603", "11624", "12529", "12536", "13305", "4866", "5022", "6790", "6797", "8154"], "roster_id": 14, "custom_points": null, "matchup_id": 14, "starters": ["6797", "4866", "6790", "10229", "11624", "5022", "11603", "8154"], "starters_points": [0.0, 0.0, 16.4, 0.0, 0.0, 0.0, 3.3, 1.4], "players_points": {"10229": 0.0, "11565": 0.0, "11603": 3.3, "11624": 0.0, "12529": 0.0, "12536": 4.5, "13305": 0.0, "4866": 0.0, "5022": 0.0, "6790": 16.4, "6797": 0.0, "8154": 1.4}}, {"points": 70.2, "players": ["12481", "13269", "13279", "13281", "13294", "5012", "6770", "8676", "9221", "9487", "9753", "9757"], "roster_id": 15, "custom_points": null, "matchup_id": 15, "starters": ["6770", "9221", "12481", "13279", "8676", "5012", "9487", "13294"], "starters_points": [12.8, 24.7, 0.0, 5.4, 1.4, 6.6, 19.3, 0.0], "players_points": {"12481": 0.0, "13269": 0.0, "13279": 5.4, "13281": 0.0, "13294": 0.0, "5012": 6.6, "6770": 12.8, "8676": 1.4, "9221": 24.7, "9487": 19.3, "9753": 0.0, "9757": 8.8}}, {"points": 99.3, "players": ["10222", "11560", "11584", "11631", "11783", "12497", "3214", "4035", "5844", "6801", "9509", "9758"], "roster_id": 16, "custom_points": null, "matchup_id": 16, "starters": ["11560", "9509", "11584", "6801", "11631", "3214", "10222", "5844"], "starters_points": [31.0, 29.3, 20.3, 6.1, 7.0, 5.6, 0.0, 0.0], "players_points": {"10222": 0.0, "11560": 31.0, "11584": 20.3, "11631": 7.0, "11783": 0.0, "12497": 0.0, "3214": 5.6, "4035": 0.0, "5844": 0.0, "6801": 6.1, "9509": 29.3, "9758": 15.1}}, {"points": 56.72, "players": ["10232", "11564", "12469", "12507", "12535", "12547", "13298", "13330", "3163", "7594", "8137", "8148"], "roster_id": 17, "custom_points": null, "matchup_id": 17, "starters": ["11564", "12507", "7594", "8137", "8148", "13330", "10232", "13298"], "starters_points": [12.82, 0.0, 19.4, 0.0, 5.3, 11.4, 0.0, 7.8], "players_points": {"10232": 0.0, "11564": 12.82, "12469": 0.0, "12507": 0.0, "12535": 0.0, "12547": 0.0, "13298": 7.8, "13330": 11.4, "3163": 9.8, "7594": 19.4, "8137": 0.0, "8148": 5.3}}, {"points": 60.58, "players": ["10235", "10859", "12530", "13268", "1466", "4892", "5892", "6786", "7021", "7567", "8144", "9511"], "roster_id": 18, "custom_points": null, "matchup_id": 18, "starters": ["4892", "5892", "7021", "6786", "8144", "10859", "7567", "1466"], "starters_points": [2.38, 28.8, 3.9, 0.0, 14.8, 7.9, 2.8, 0.0], "players_points": {"10235": 0.0, "10859": 7.9, "12530": 2.1, "13268": 0.0, "1466": 0.0, "4892": 2.38, "5892": 28.8, "6786": 0.0, "7021": 3.9, "7567": 2.8, "8144": 14.8, "9511": 0.0}}]}</script>
+<script id="bootstrap-txns" type="application/json">{"week": 1, "transactions": [{"transaction_id": "1403804963230003200", "type": "free_agent", "status": "complete", "created": 1789055693971, "roster_ids": [18], "adds": {"10235": 18}, "drops": {"12476": 18}, "waiver_budget": []}, {"transaction_id": "1403516031372124160", "type": "free_agent", "status": "complete", "created": 1788986807248, "roster_ids": [13], "adds": {"11834": 13}, "drops": null, "waiver_budget": []}, {"transaction_id": "1403513060030730240", "type": "free_agent", "status": "complete", "created": 1788986098824, "roster_ids": [10], "adds": {"9482": 10}, "drops": {"13274": 10}, "waiver_budget": []}, {"transaction_id": "1403505288841113600", "type": "free_agent", "status": "complete", "created": 1788984246028, "roster_ids": [13], "adds": null, "drops": {"1939": 13}, "waiver_budget": []}, {"transaction_id": "1403463412775739392", "type": "free_agent", "status": "complete", "created": 1788974261997, "roster_ids": [8], "adds": {"2505": 8}, "drops": {"4033": 8}, "waiver_budget": []}, {"transaction_id": "1403463282886459392", "type": "free_agent", "status": "complete", "created": 1788974231028, "roster_ids": [8], "adds": {"2078": 8}, "drops": {"13288": 8}, "waiver_budget": []}, {"transaction_id": "1403461233717387264", "type": "free_agent", "status": "complete", "created": 1788973742468, "roster_ids": [1], "adds": {"8111": 1}, "drops": {"3036": 1}, "waiver_budget": []}, {"transaction_id": "1403250758589140992", "type": "free_agent", "status": "complete", "created": 1788923561287, "roster_ids": [10], "adds": {"7600": 10}, "drops": {"12498": 10}, "waiver_budget": []}]}</script>
+
+<script>
+(function () {
+  const AVATAR_COLORS = ['--avatar-a', '--avatar-b', '--avatar-c', '--avatar-d', '--avatar-e', '--avatar-f'];
+  const POS_VAR = { QB: '--pos-qb', RB: '--pos-rb', WR: '--pos-wr', TE: '--pos-te', FLEX: '--pos-te' };
+
+  function readBootstrap(id) {
+    const el = document.getElementById(id);
+    try { return JSON.parse(el.textContent); } catch (e) { return null; }
+  }
+
+  const state = {
+    league: readBootstrap('bootstrap-league'),
+    teams: readBootstrap('bootstrap-teams').teams,
+    players: readBootstrap('bootstrap-players'),
+    matchups: readBootstrap('bootstrap-matchups').matchups,
+    txns: readBootstrap('bootstrap-txns').transactions,
+  };
+
+  function initials(name) {
+    if (!name) return '??';
+    return name.slice(0, 2).toUpperCase();
+  }
+
+  function avatarColorVar(seed) {
+    let h = 0;
+    for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+    return AVATAR_COLORS[h % AVATAR_COLORS.length];
+  }
+
+  function avatarEl(team) {
+    const div = document.createElement('div');
+    div.className = 'avatar';
+    div.style.background = `var(${avatarColorVar(team.owner_id || team.display_name || 'x')})`;
+    div.textContent = initials(team.team_name || team.display_name);
+    return div;
+  }
+
+  function playerLabel(pid) {
+    const p = state.players[pid];
+    if (!p) return { name: 'Empty', pos: null, team: null };
+    return { name: `${(p.first_name || '').slice(0,1)}. ${p.last_name || pid}`.trim(), pos: p.position, team: p.team };
+  }
+
+  const TXN_TYPE_LABEL = { free_agent: 'Free agent', waiver: 'Waiver claim', trade: 'Trade' };
+
+  function describeTransactionForRoster(tx, rid) {
+    const parts = [];
+    if (tx.adds) Object.entries(tx.adds).forEach(([pid, r]) => { if (r === rid) parts.push(`added ${playerLabel(pid).name}`); });
+    if (tx.drops) Object.entries(tx.drops).forEach(([pid, r]) => { if (r === rid) parts.push(`dropped ${playerLabel(pid).name}`); });
+    const typeLabel = TXN_TYPE_LABEL[tx.type] || (tx.type ? tx.type[0].toUpperCase() + tx.type.slice(1) : 'Move');
+    return `${typeLabel}: ${parts.join(', ') || 'no players listed'} · ${timeAgo(tx.created)}`;
+  }
+
+  function fmt(n) {
+    return (Math.round((n || 0) * 100) / 100).toFixed(2);
+  }
+
+  function renderStatCards(container, tiles, idPrefix) {
+    container.innerHTML = '';
+    tiles.forEach((t, i) => {
+      const card = document.createElement('div');
+      card.className = 'stat-card liftable';
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'stat-tile';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-controls', `${idPrefix}-detail-${i}`);
+      btn.innerHTML = `
+        <div class="stat-tile-top">
+          <div class="eyebrow">${t.eyebrow}</div>
+          <svg class="chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="headline">${t.headline}</div>
+        <div class="detail">${t.detail}</div>`;
+
+      const panel = document.createElement('div');
+      panel.className = 'stat-detail';
+      panel.id = `${idPrefix}-detail-${i}`;
+      panel.hidden = true;
+      if (t.rows && t.rows.length) {
+        t.rows.forEach(r => {
+          if (r.moves && r.moves.length) {
+            const rowBtn = document.createElement('button');
+            rowBtn.type = 'button';
+            rowBtn.className = 'stat-detail-row stat-detail-row-btn';
+            rowBtn.setAttribute('aria-expanded', 'false');
+            rowBtn.innerHTML = `<span class="label">${r.label}</span><span class="value mono">${r.value}<svg class="chevron-sm" width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
+            const sub = document.createElement('div');
+            sub.className = 'stat-detail-sub';
+            sub.hidden = true;
+            sub.innerHTML = r.moves.map(mv => `<div class="stat-detail-sub-row">${mv}</div>`).join('');
+            rowBtn.addEventListener('click', () => {
+              const expanded = rowBtn.getAttribute('aria-expanded') === 'true';
+              rowBtn.setAttribute('aria-expanded', String(!expanded));
+              sub.hidden = expanded;
+            });
+            panel.appendChild(rowBtn);
+            panel.appendChild(sub);
+          } else {
+            const row = document.createElement('div');
+            row.className = 'stat-detail-row';
+            row.innerHTML = `<span class="label">${r.label}</span><span class="value mono">${r.value}</span>`;
+            panel.appendChild(row);
+          }
+        });
+      } else {
+        const empty = document.createElement('div');
+        empty.className = 'stat-detail-empty';
+        empty.textContent = t.emptyMessage || 'No further detail for this stat.';
+        panel.appendChild(empty);
+      }
+
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        panel.hidden = expanded;
+      });
+
+      card.appendChild(btn);
+      card.appendChild(panel);
+      container.appendChild(card);
+    });
+  }
+
+  function timeAgo(iso) {
+    if (!iso) return 'just now';
+    const s = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 1000));
+    if (s < 60) return 'just now';
+    if (s < 3600) return Math.floor(s / 60) + 'm ago';
+    if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+    return Math.floor(s / 86400) + 'd ago';
+  }
+
+  function render() {
+    const { league, teams, matchups, txns } = state;
+    const teamByRoster = new Map(teams.map(t => [t.roster_id, t]));
+    const matchupByRoster = new Map(matchups.map(m => [m.roster_id, m]));
+
+    document.getElementById('league-name').textContent = league.name;
+    document.getElementById('league-sub').textContent =
+      `Season ${league.season} · Week ${league.current_week} · ${league.total_rosters} teams · ${league.scoring_type}`;
+    document.getElementById('sync-label').textContent = `synced ${timeAgo(league.last_synced)}`;
+    document.getElementById('footer-sync').textContent = league.last_synced
+      ? `Last synced ${new Date(league.last_synced).toLocaleString()}`
+      : '';
+
+    // ---- Live scoreboard ----
+    const liveNote = document.getElementById('live-note');
+    const liveBanner = document.getElementById('live-banner');
+    liveBanner.innerHTML = '';
+    if (!league.matchups_paired) {
+      liveNote.textContent = `Week ${league.current_week} · ranked by live points`;
+      const banner = document.createElement('div');
+      banner.className = 'note-banner';
+      banner.innerHTML = `<span><b>No opponents assigned yet.</b> Sleeper hasn't paired up this week's matchups, so consider this a free-for-all leaderboard until it does.</span>`;
+      liveBanner.appendChild(banner);
+    } else {
+      liveNote.textContent = `Week ${league.current_week} · head-to-head · may the odds be ever in your favor`;
+    }
+
+    const ranked = matchups.slice().sort((a, b) => b.points - a.points);
+    const maxPts = Math.max(1, ...ranked.map(m => m.points));
+    const board = document.getElementById('live-scoreboard');
+    board.innerHTML = '';
+    ranked.forEach((m, i) => {
+      const t = teamByRoster.get(m.roster_id);
+      const row = document.createElement('div');
+      row.className = 'score-row';
+      const rank = document.createElement('div');
+      rank.className = 'score-rank mono';
+      rank.textContent = i + 1;
+      const team = document.createElement('div');
+      team.className = 'score-team';
+      const nameWrap = document.createElement('div');
+      nameWrap.style.minWidth = '0';
+      nameWrap.style.flex = '1';
+      const nm = document.createElement('div');
+      nm.className = 'score-name';
+      nm.textContent = t ? (t.team_name || t.display_name) : `Roster ${m.roster_id}`;
+      const track = document.createElement('div');
+      track.className = 'score-bar-track';
+      const fill = document.createElement('div');
+      fill.className = 'score-bar-fill';
+      fill.style.width = Math.max(2, (m.points / maxPts) * 100) + '%';
+      track.appendChild(fill);
+      nameWrap.appendChild(nm);
+      nameWrap.appendChild(track);
+      team.appendChild(avatarEl(t || {}));
+      team.appendChild(nameWrap);
+      const pts = document.createElement('div');
+      pts.className = 'score-pts';
+      pts.textContent = fmt(m.points);
+      row.appendChild(rank);
+      row.appendChild(document.createElement('div'));
+      row.appendChild(team);
+      row.appendChild(pts);
+      board.appendChild(row);
+    });
+
+    // ---- Standings ----
+    const standingsBody = document.getElementById('standings-body');
+    standingsBody.innerHTML = '';
+    const standingsSorted = teams.slice().sort((a, b) => {
+      if (b.wins !== a.wins) return b.wins - a.wins;
+      if (a.losses !== b.losses) return a.losses - b.losses;
+      const ma = matchupByRoster.get(a.roster_id), mb = matchupByRoster.get(b.roster_id);
+      return (mb ? mb.points : 0) - (ma ? ma.points : 0);
+    });
+    standingsSorted.forEach((t, i) => {
+      const m = matchupByRoster.get(t.roster_id);
+      const tr = document.createElement('tr');
+      if (i < 3) tr.className = 'podium';
+      const tdRank = document.createElement('td');
+      tdRank.className = 'mono';
+      tdRank.textContent = i + 1;
+      const tdTeam = document.createElement('td');
+      const cell = document.createElement('div');
+      cell.className = 'team-cell';
+      cell.appendChild(avatarEl(t));
+      const info = document.createElement('div');
+      info.innerHTML = `<div class="name">${t.team_name || t.display_name}</div>${t.team_name ? `<div class="owner">${t.display_name}</div>` : ''}`;
+      cell.appendChild(info);
+      tdTeam.appendChild(cell);
+      const tdRec = document.createElement('td');
+      tdRec.className = 'num mono';
+      tdRec.textContent = `${t.wins}-${t.losses}-${t.ties}`;
+      const tdPts = document.createElement('td');
+      tdPts.className = 'num mono';
+      tdPts.textContent = fmt(m ? m.points : 0);
+      const tdDraft = document.createElement('td');
+      tdDraft.className = 'num mono';
+      tdDraft.textContent = t.draft_position ? `#${t.draft_position}` : '—';
+      tr.appendChild(tdRank);
+      tr.appendChild(tdTeam);
+      tr.appendChild(tdRec);
+      tr.appendChild(tdPts);
+      tr.appendChild(tdDraft);
+      standingsBody.appendChild(tr);
+    });
+
+    // ---- Stat tiles ----
+    const statGrid = document.getElementById('stat-grid');
+    statGrid.innerHTML = '';
+
+    const byPoints = matchups.slice().sort((a, b) => b.points - a.points);
+    const leader = byPoints[0];
+    const leaderTeam = teamByRoster.get(leader.roster_id);
+    const zeroCount = matchups.filter(m => m.points === 0).length;
+
+    const addsByRoster = new Map();
+    const txnCountByRoster = new Map();
+    txns.forEach(tx => {
+      (tx.roster_ids || []).forEach(rid => txnCountByRoster.set(rid, (txnCountByRoster.get(rid) || 0) + 1));
+      if (tx.adds) Object.values(tx.adds).forEach(rid => addsByRoster.set(rid, (addsByRoster.get(rid) || 0) + 1));
+    });
+    let waiverLeaderRid = null, waiverMax = 0;
+    addsByRoster.forEach((v, k) => { if (v > waiverMax) { waiverMax = v; waiverLeaderRid = k; } });
+    let txnLeaderRid = null, txnMax = 0;
+    txnCountByRoster.forEach((v, k) => { if (v > txnMax) { txnMax = v; txnLeaderRid = k; } });
+
+    const rankByRoster = new Map(byPoints.map((m, i) => [m.roster_id, i + 1]));
+    let riserTeam = null, riserDelta = -Infinity;
+    teams.forEach(t => {
+      if (!t.draft_position) return;
+      const r = rankByRoster.get(t.roster_id);
+      if (r == null) return;
+      const delta = t.draft_position - r;
+      if (delta > riserDelta) { riserDelta = delta; riserTeam = t; }
+    });
+
+    function teamLabel(rid) {
+      const t = teamByRoster.get(rid);
+      return t ? (t.team_name || t.display_name) : `Roster ${rid}`;
+    }
+
+    const tiles = [];
+    tiles.push({
+      eyebrow: `Week ${league.current_week} Top Dog`,
+      headline: leaderTeam ? (leaderTeam.team_name || leaderTeam.display_name) : '—',
+      detail: `${fmt(leader.points)} points and bragging rights`,
+      rows: byPoints.slice(0, 6).map((m, i) => ({ label: `${i + 1}. ${teamLabel(m.roster_id)}`, value: fmt(m.points) })),
+    });
+    tiles.push({
+      eyebrow: 'Zeroes Club',
+      headline: `${zeroCount} / ${teams.length}`,
+      detail: zeroCount > 0 ? 'teams still snoozing at 0.00 points' : 'everyone showed up to play',
+      rows: matchups.filter(m => m.points === 0).map(m => ({ label: teamLabel(m.roster_id), value: '0.00' })),
+      emptyMessage: "Nobody's asleep — everyone's on the board!",
+    });
+    if (waiverLeaderRid != null) {
+      const addEvents = [];
+      txns.forEach(tx => {
+        if (tx.adds) Object.entries(tx.adds).forEach(([pid, rid]) => addEvents.push({ rid, pid, created: tx.created || 0 }));
+      });
+      addEvents.sort((a, b) => b.created - a.created);
+      tiles.push({
+        eyebrow: 'Waiver Wire Hustle',
+        headline: teamLabel(waiverLeaderRid),
+        detail: `${waiverMax} add${waiverMax === 1 ? '' : 's'} this week — no chill`,
+        rows: addEvents.slice(0, 8).map(e => ({ label: teamLabel(e.rid), value: playerLabel(e.pid).name })),
+        emptyMessage: "Total waiver silence. Scared money don't make money.",
+      });
+    }
+    if (txnLeaderRid != null) {
+      tiles.push({
+        eyebrow: 'Trigger Finger',
+        headline: teamLabel(txnLeaderRid),
+        detail: `${txnMax} roster move${txnMax === 1 ? '' : 's'} this week — click to see the damage`,
+        rows: Array.from(txnCountByRoster.entries())
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 8)
+          .map(([rid, count]) => ({
+            label: teamLabel(rid),
+            value: `${count} move${count === 1 ? '' : 's'}`,
+            moves: txns
+              .filter(tx => (tx.roster_ids || []).includes(rid))
+              .sort((a, b) => (b.created || 0) - (a.created || 0))
+              .map(tx => describeTransactionForRoster(tx, rid)),
+          })),
+        emptyMessage: "Nobody's touched their roster. Bold strategy.",
+      });
+    }
+    if (riserTeam) {
+      const riserRows = teams
+        .filter(t => t.draft_position && rankByRoster.get(t.roster_id) != null)
+        .map(t => {
+          const r = rankByRoster.get(t.roster_id);
+          return { label: t.team_name || t.display_name, value: `#${t.draft_position} → #${r} (${t.draft_position - r > 0 ? '+' : ''}${t.draft_position - r})`, delta: t.draft_position - r };
+        })
+        .sort((a, b) => b.delta - a.delta)
+        .slice(0, 8);
+      tiles.push({
+        eyebrow: 'Draft Day Redemption',
+        headline: riserTeam.team_name || riserTeam.display_name,
+        detail: `Drafted #${riserTeam.draft_position}, currently #${rankByRoster.get(riserTeam.roster_id)} — nobody saw this coming`,
+        rows: riserRows,
+      });
+    }
+
+    renderStatCards(statGrid, tiles, 'stat');
+
+    // ---- League Insights ----
+    const insightsGrid = document.getElementById('insights-grid');
+    const insightTiles = [];
+
+    const UNAVAILABLE_STATUS = new Set(['Out', 'Doubtful', 'IR', 'PUP', 'NA']);
+    const landmines = [];
+    teams.forEach(t => {
+      t.starters.forEach(pid => {
+        const p = state.players[pid];
+        if (!p) return;
+        const flag = p.status === 'Inactive' ? 'Inactive' : (UNAVAILABLE_STATUS.has(p.injury_status) ? p.injury_status : null);
+        if (flag) landmines.push({ team: teamLabel(t.roster_id), player: playerLabel(pid).name, flag });
+      });
+    });
+    insightTiles.push({
+      eyebrow: 'Lineup Landmines',
+      headline: `${landmines.length} starter${landmines.length === 1 ? '' : 's'}`,
+      detail: landmines.length ? 'currently locked into the lineup and guaranteed a zero' : 'nobody has started a player ruled out this week',
+      rows: landmines.map(l => ({ label: l.team, value: `${l.player} (${l.flag})` })),
+      emptyMessage: 'Every starting lineup is clean this week.',
+    });
+
+    const stackRows = teams.map(t => {
+      const counts = new Map();
+      t.players.forEach(pid => {
+        const nfl = state.players[pid] && state.players[pid].team;
+        if (nfl) counts.set(nfl, (counts.get(nfl) || 0) + 1);
+      });
+      let topTeam = null, topCount = 0;
+      counts.forEach((v, k) => { if (v > topCount) { topCount = v; topTeam = k; } });
+      return { rid: t.roster_id, topTeam, topCount };
+    }).filter(s => s.topCount >= 2).sort((a, b) => b.topCount - a.topCount);
+    insightTiles.push({
+      eyebrow: 'Bye Week Landmines',
+      headline: stackRows[0] ? teamLabel(stackRows[0].rid) : 'None yet',
+      detail: stackRows[0] ? `${stackRows[0].topCount} players from ${stackRows[0].topTeam} — one bye week wipes out the roster` : 'no team has stacked one NFL team',
+      rows: stackRows.map(s => ({ label: teamLabel(s.rid), value: `${s.topCount} on ${s.topTeam}` })),
+      emptyMessage: 'Every roster is spread across different NFL teams — no bye-week risk yet.',
+    });
+
+    const posTotals = new Map();
+    matchups.forEach(m => {
+      Object.entries(m.players_points || {}).forEach(([pid, pts]) => {
+        const pos = state.players[pid] && state.players[pid].position;
+        if (['QB', 'RB', 'WR', 'TE'].includes(pos)) posTotals.set(pos, (posTotals.get(pos) || 0) + pts);
+      });
+    });
+    const posSorted = Array.from(posTotals.entries()).sort((a, b) => b[1] - a[1]);
+    insightTiles.push({
+      eyebrow: 'Position Power Rankings',
+      headline: posSorted[0] ? `${posSorted[0][0]}s are carrying the league` : '—',
+      detail: posSorted[0] ? `${fmt(posSorted[0][1])} combined points scored by ${posSorted[0][0]}s this week` : 'no scoring yet',
+      rows: posSorted.map(([pos, pts]) => ({ label: pos, value: fmt(pts) })),
+    });
+
+    renderStatCards(insightsGrid, insightTiles, 'insight');
+
+    // ---- Bench points ----
+    const benchList = document.getElementById('bench-list');
+    benchList.innerHTML = '';
+    const benchData = matchups.map(m => {
+      const totalPlayed = Object.values(m.players_points || {}).reduce((a, b) => a + b, 0);
+      const bench = Math.max(0, totalPlayed - m.points);
+      return { roster_id: m.roster_id, bench };
+    }).sort((a, b) => b.bench - a.bench);
+    const maxBench = Math.max(1, ...benchData.map(b => b.bench));
+    benchData.forEach(b => {
+      const t = teamByRoster.get(b.roster_id);
+      const row = document.createElement('div');
+      row.className = 'bench-row';
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = t ? (t.team_name || t.display_name) : `Roster ${b.roster_id}`;
+      const track = document.createElement('div');
+      track.className = 'bench-track';
+      const fill = document.createElement('div');
+      fill.className = 'bench-fill';
+      fill.style.width = Math.max(1, (b.bench / maxBench) * 100) + '%';
+      track.appendChild(fill);
+      const val = document.createElement('div');
+      val.className = 'bench-val';
+      val.textContent = fmt(b.bench);
+      row.appendChild(name);
+      row.appendChild(track);
+      row.appendChild(val);
+      benchList.appendChild(row);
+    });
+
+    // ---- Roster picker ----
+    const picker = document.getElementById('team-picker');
+    const prevValue = picker.value;
+    picker.innerHTML = '';
+    teams.slice().sort((a, b) => (a.team_name || a.display_name).localeCompare(b.team_name || b.display_name))
+      .forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t.roster_id;
+        opt.textContent = t.team_name || t.display_name;
+        picker.appendChild(opt);
+      });
+    if (prevValue && teams.some(t => String(t.roster_id) === prevValue)) picker.value = prevValue;
+
+    function renderRoster() {
+      const rid = Number(picker.value);
+      const t = teamByRoster.get(rid);
+      const m = matchupByRoster.get(rid);
+      const startersEl = document.getElementById('roster-starters');
+      const benchEl = document.getElementById('roster-bench');
+      startersEl.innerHTML = '';
+      benchEl.innerHTML = '';
+      if (!t) return;
+      const starterSet = new Set(t.starters);
+      function rowFor(pid, pts) {
+        const info = playerLabel(pid);
+        const row = document.createElement('div');
+        row.className = 'player-row';
+        const badge = document.createElement('div');
+        badge.className = 'pos-badge';
+        const posVar = POS_VAR[info.pos] || null;
+        badge.style.background = posVar ? `var(${posVar})` : 'var(--ink-faint)';
+        badge.textContent = info.pos || '—';
+        const nameWrap = document.createElement('div');
+        nameWrap.innerHTML = `<span class="player-name">${info.name}</span>${info.team ? `<span class="player-team">${info.team}</span>` : ''}`;
+        const ptsEl = document.createElement('div');
+        ptsEl.className = 'player-pts';
+        ptsEl.textContent = fmt(pts);
+        row.appendChild(badge);
+        row.appendChild(nameWrap);
+        row.appendChild(ptsEl);
+        return row;
+      }
+      t.starters.forEach(pid => startersEl.appendChild(rowFor(pid, (m && m.players_points && m.players_points[pid]) || 0)));
+      t.players.filter(pid => !starterSet.has(pid)).forEach(pid => benchEl.appendChild(rowFor(pid, (m && m.players_points && m.players_points[pid]) || 0)));
+    }
+    picker.onchange = renderRoster;
+    renderRoster();
+  }
+
+  render();
+
+  // ---- Live db overlay ----
+  (async function connectDb() {
+    if (!window.claude || !window.claude.use) return;
+    let db;
+    try { db = await window.claude.use('db'); } catch (e) { return; }
+    if (!db) return;
+
+    async function pullAll() {
+      try {
+        const [league, teams, players, matchups, txns] = await Promise.all([
+          db.doc('league/current').get(),
+          db.doc('league/teams').get(),
+          db.doc('league/players').get(),
+          db.doc(`league/matchups_week_${state.league.current_week}`).get(),
+          db.doc(`league/transactions_week_${state.league.current_week}`).get(),
+        ]);
+        if (league.exists) state.league = league.data();
+        if (teams.exists) state.teams = teams.data().teams;
+        if (players.exists) state.players = players.data();
+        if (matchups.exists) state.matchups = matchups.data().matchups;
+        if (txns.exists) state.txns = txns.data().transactions;
+        render();
+      } catch (e) { /* keep showing last good state */ }
+    }
+
+    pullAll();
+    db.doc('league/current').onSnapshot(() => { pullAll(); });
+  })();
+})();
+</script>
