@@ -767,6 +767,15 @@
     return (Math.round((n || 0) * 100) / 100).toFixed(2);
   }
 
+  // Sleeper account fields (team_name, display_name) are set by league members
+  // themselves, so they're untrusted input — escape before ever putting them
+  // (or anything derived from them, like tile labels) into innerHTML.
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[c]));
+  }
+
   function renderStatCards(container, tiles, idPrefix) {
     container.innerHTML = '';
     tiles.forEach((t, i) => {
@@ -780,13 +789,13 @@
       btn.setAttribute('aria-controls', `${idPrefix}-detail-${i}`);
       btn.innerHTML = `
         <div class="stat-tile-top">
-          <div class="eyebrow">${t.eyebrow}</div>
+          <div class="eyebrow">${esc(t.eyebrow)}</div>
           <svg class="chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <div class="headline">${t.headline}</div>
-        <div class="detail">${t.detail}</div>`;
+        <div class="headline">${esc(t.headline)}</div>
+        <div class="detail">${esc(t.detail)}</div>`;
 
       const panel = document.createElement('div');
       panel.className = 'stat-detail';
@@ -799,11 +808,11 @@
             rowBtn.type = 'button';
             rowBtn.className = 'stat-detail-row stat-detail-row-btn';
             rowBtn.setAttribute('aria-expanded', 'false');
-            rowBtn.innerHTML = `<span class="label">${r.label}</span><span class="value mono">${r.value}<svg class="chevron-sm" width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
+            rowBtn.innerHTML = `<span class="label">${esc(r.label)}</span><span class="value mono">${esc(r.value)}<svg class="chevron-sm" width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
             const sub = document.createElement('div');
             sub.className = 'stat-detail-sub';
             sub.hidden = true;
-            sub.innerHTML = r.moves.map(mv => `<div class="stat-detail-sub-row">${mv}</div>`).join('');
+            sub.innerHTML = r.moves.map(mv => `<div class="stat-detail-sub-row">${esc(mv)}</div>`).join('');
             rowBtn.addEventListener('click', () => {
               const expanded = rowBtn.getAttribute('aria-expanded') === 'true';
               rowBtn.setAttribute('aria-expanded', String(!expanded));
@@ -814,7 +823,7 @@
           } else {
             const row = document.createElement('div');
             row.className = 'stat-detail-row';
-            row.innerHTML = `<span class="label">${r.label}</span><span class="value mono">${r.value}</span>`;
+            row.innerHTML = `<span class="label">${esc(r.label)}</span><span class="value mono">${esc(r.value)}</span>`;
             panel.appendChild(row);
           }
         });
@@ -870,7 +879,7 @@
       const banner = document.createElement('div');
       banner.className = 'note-banner critical';
       const shown = lastFetchOk ? `Showing data last refreshed ${timeAgo(lastFetchOk.toISOString())}.` : 'No data loaded yet.';
-      banner.innerHTML = `<span><b>Couldn't refresh from Sleeper.</b> ${shown} (${lastFetchError})</span>`;
+      banner.innerHTML = `<span><b>Couldn't refresh from Sleeper.</b> ${esc(shown)} (${esc(lastFetchError)})</span>`;
       el.appendChild(banner);
     }
   }
@@ -962,7 +971,7 @@
       cell.className = 'team-cell';
       cell.appendChild(avatarEl(t));
       const info = document.createElement('div');
-      info.innerHTML = `<div class="name">${t.team_name || t.display_name}</div>${t.team_name ? `<div class="owner">${t.display_name}</div>` : ''}`;
+      info.innerHTML = `<div class="name">${esc(t.team_name || t.display_name)}</div>${t.team_name ? `<div class="owner">${esc(t.display_name)}</div>` : ''}`;
       cell.appendChild(info);
       tdTeam.appendChild(cell);
       const tdRec = document.createElement('td');
@@ -1206,7 +1215,7 @@
         badge.style.background = posVar ? `var(${posVar})` : 'var(--ink-faint)';
         badge.textContent = info.pos || '—';
         const nameWrap = document.createElement('div');
-        nameWrap.innerHTML = `<span class="player-name">${info.name}</span>${info.team ? `<span class="player-team">${info.team}</span>` : ''}`;
+        nameWrap.innerHTML = `<span class="player-name">${esc(info.name)}</span>${info.team ? `<span class="player-team">${esc(info.team)}</span>` : ''}`;
         const ptsEl = document.createElement('div');
         ptsEl.className = 'player-pts';
         ptsEl.textContent = fmt(pts);
